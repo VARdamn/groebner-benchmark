@@ -1,0 +1,14 @@
+{
+  "test": "hemmecke",
+  "time": 0.0428,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 4,
+  "crit1": 11,
+  "crit2": 14,
+  "avr_memory": 26.7852,
+  "max_memory": 52.375,
+  "num_equations": 3,
+  "num_vars": 4,
+  "mem_per_sec": 1223.715
+}

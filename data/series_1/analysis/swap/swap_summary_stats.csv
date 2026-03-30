@@ -1,0 +1,3 @@
+config,completed_tasks,timeout_tasks,total_effective_time_seconds,geometric_mean_effective_time_seconds,best_share,effective_tasks_for_geomean
+2,89,0,10714.0246,2.618111206177495,0.016853932584269662,89
+4,89,0,10553.3141,2.579901516581074,0.9831460674157303,89

@@ -1,0 +1,14 @@
+{
+  "test": "lorentz",
+  "time": 0.0251,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 4,
+  "crit1": 27,
+  "crit2": 14,
+  "avr_memory": 26.8301,
+  "max_memory": 52.0273,
+  "num_equations": 4,
+  "num_vars": 4,
+  "mem_per_sec": 2072.8025
+}

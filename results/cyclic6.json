@@ -1,0 +1,14 @@
+{
+  "test": "cyclic6",
+  "time": 18.2415,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 6,
+  "crit1": 574,
+  "crit2": 4453,
+  "avr_memory": 55.4834,
+  "max_memory": 59.2578,
+  "num_equations": 6,
+  "num_vars": 6,
+  "mem_per_sec": 3.2485
+}

@@ -1,0 +1,14 @@
+{
+  "test": "cohn2",
+  "time": 2.7372,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 4,
+  "crit1": 0,
+  "crit2": 449,
+  "avr_memory": 46.9734,
+  "max_memory": 58.8203,
+  "num_equations": 4,
+  "num_vars": 4,
+  "mem_per_sec": 21.4892
+}

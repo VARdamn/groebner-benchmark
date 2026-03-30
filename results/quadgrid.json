@@ -1,0 +1,14 @@
+{
+  "test": "quadgrid",
+  "time": 0.0268,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 6,
+  "crit1": 22,
+  "crit2": 2,
+  "avr_memory": 27.1191,
+  "max_memory": 52.6875,
+  "num_equations": 5,
+  "num_vars": 6,
+  "mem_per_sec": 1965.9515
+}

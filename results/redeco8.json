@@ -1,0 +1,14 @@
+{
+  "test": "redeco8",
+  "time": 3.5235,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 8,
+  "crit1": 659,
+  "crit2": 1261,
+  "avr_memory": 44.4258,
+  "max_memory": 55.4531,
+  "num_equations": 8,
+  "num_vars": 8,
+  "mem_per_sec": 15.7381
+}

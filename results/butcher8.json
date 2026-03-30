@@ -1,0 +1,14 @@
+{
+  "test": "butcher8",
+  "time": 16.2677,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 8,
+  "crit1": 568,
+  "crit2": 1337,
+  "avr_memory": 56.9581,
+  "max_memory": 61.7461,
+  "num_equations": 8,
+  "num_vars": 8,
+  "mem_per_sec": 3.7956
+}

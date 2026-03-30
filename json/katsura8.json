@@ -1,0 +1,26 @@
+{
+    "variables": [
+        "u0",
+        "u1",
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6",
+        "u7",
+        "u8"
+    ],
+    "equations": [
+        "u0^2-u0+2*u1^2+2*u2^2+2*u3^2+2*u4^2+2*u5^2+2*u6^2+2*u7^2+2*u8^2",
+        "2*u0*u1+2*u1*u2-u1+2*u2*u3+2*u3*u4+2*u4*u5+2*u5*u6+2*u6*u7+2*u7*u8",
+        "2*u0*u2+u1^2+2*u1*u3+2*u2*u4-u2+2*u3*u5+2*u4*u6+2*u5*u7+2*u6*u8",
+        "2*u0*u3+2*u1*u2+2*u1*u4+2*u2*u5+2*u3*u6-u3+2*u4*u7+2*u5*u8",
+        "2*u0*u4+2*u1*u3+2*u1*u5+u2^2+2*u2*u6+2*u3*u7+2*u4*u8-u4",
+        "2*u0*u5+2*u1*u4+2*u1*u6+2*u2*u3+2*u2*u7+2*u3*u8-u5",
+        "2*u0*u6+2*u1*u5+2*u1*u7+2*u2*u4+2*u2*u8+u3^2-u6",
+        "2*u0*u7+2*u1*u6+2*u1*u8+2*u2*u5+2*u3*u4-u7",
+        "u0+2*u1+2*u2+2*u3+2*u4+2*u5+2*u6+2*u7+2*u8-1"
+    ],
+    "description": "TITLE : katsura n, a problem of magnetism in physics \n\n\nREFERENCES : http://posso.lip6.fr/~jcf/benchs/benchs.html\n\nT. Sasaki and T. Takeshima. J. Info. Process. 12, 371-379, 1989.\n\nH. Kobayashi, S. Moritsugu and P. W. Hogan. ISSAC-88, K1-K5.\n\nS. Moritsugu. Doctoral Thesis at the University of Tokyo, 1989, K2-K5.\n\nA. Giovini, T. Mora, G. Niesi, L. Robbiano and C. Traverso. ISSAC-91, K4.\n\nH. M. Moeller, T. Mora and C. Traverso. ISSAC-92, K3=K4. [12] M. Noro. 1993, K6.\n\nT. Shimoyamaand T. Takeshima. 1993, K3-K8.\n\nH. Murao, H. Kobayashi and T. Fujise. J. Symbolic Comp. 15, 123, K6.\n\nC. Traverso, L. Donati, (1989) ISSAC-89.\n\nJ. C. Fauguere, P. Gianni, D. Lazard and T. Mora. J. Symbolic Comp. (1994).\n\nJ. C. Fauguere. Doctoral Thesis, Paris 1994.",
+    "dimension": 9
+}

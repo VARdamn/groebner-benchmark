@@ -1,0 +1,24 @@
+{
+    "variables": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "t",
+        "u",
+        "v",
+        "w"
+    ],
+    "equations": [
+        "50000*a+50000*b-31627",
+        "50000*c+50000*d+67267",
+        "2500000*a*t+2500000*b*u-2500000*c*v-2500000*d*w+2091337",
+        "5000000*a*v+5000000*b*w+5000000*c*t+5000000*d*u-8672667",
+        "31250*a*t^2-31250*a*v^2+31250*b*u^2-31250*b*w^2-62500*c*t*v-62500*d*u*w-42261",
+        "2000000*a*t*v+2000000*b*u*w+1000000*c*t^2-1000000*c*v^2+1000000*d*u^2-1000000*d*w^2+843453",
+        "10000000*a*t^3-30000000*a*t*v^2+10000000*b*u^3-30000000*b*u*w^2-30000000*c*t^2*v+10000000*c*v^3-30000000*d*u^2*w+10000000*d*w^3+9563453",
+        "30000000*a*t^2*v-10000000*a*v^3+30000000*b*u^2*w-10000000*b*w^3+10000000*c*t^3-30000000*c*t*v^2+10000000*d*u^3-30000000*d*u*w^2-12342523"
+    ],
+    "description": "TITLE : heart-dipole problem\n\nREFERENCES :\n\nNelsen, C.V. and Hodgkin, B.C.:\n`Determination of magnitudes, directions, and locations of two independent\n dipoles in a circular conducting region from boundary potential measurements'\nIEEE Trans. Biomed. Engrg. Vol. BME-28, No. 12, pages 817-823, 1981.\n\nMorgan, A.P. and Sommese, A.J.:\n`Coefficient-Parameter Polynomial Continuation'\nAppl. Math. Comput. Vol. 29, No. 2, pages 123-160, 1989.\nErrata: Appl. Math. Comput. 51:207 (1992)\n\nMorgan, A.P. and Sommese, A. and Watson, L.T.:\n`Mathematical reduction of a heart dipole model'\nJ. Comput. Appl. Math. Vol. 27, pages 407-410, 1989.\n\nJan Verschelde. Homotopy Continuation Methods for solving Polynomial\n Systems. PhD thesis, Katholike Univ. Leuven, May 1996.",
+    "dimension": 8
+}

@@ -1,0 +1,24 @@
+{
+    "variables": [
+        "a10",
+        "a20",
+        "a21",
+        "a22",
+        "a30",
+        "a31",
+        "a32",
+        "a33"
+    ],
+    "equations": [
+        "-81*a10^2*a21+3*a10*a20*a33+4*a10*a21*a32+5*a10*a22*a31+24*a10*a30+7*a20*a31+8*a21*a30",
+        "-54*a10^2*a22-104*a10*a20+5*a10*a21*a33+6*a10*a22*a32+8*a10*a30+28*a10*a31+8*a20*a32+9*a21*a31+10*a22*a30",
+        "-60*a10-16*a22+28*a32+105*a33",
+        "-162*a10^2-284*a10*a22+50*a10*a32+180*a10*a33-112*a20+55*a21*a33+60*a22*a32+70*a30+260*a31",
+        "11*a10*a33-176*a10-15*a21+13*a22*a33+15*a31+56*a32",
+        "a33-1",
+        "-162*a10^2*a20+2*a10*a20*a32+3*a10*a21*a31+4*a10*a22*a30+6*a20*a30",
+        "-162*a10^2-75*a10*a21+7*a10*a22*a33+32*a10*a32+9*a20*a31+9*a20*a33+10*a21*a32+11*a22*a31+48*a30"
+    ],
+    "description": "TITLE : a \"dessin d'enfant\", called des18_3\n\n\nREFERENCES :\n\nRaphael Nauheim:\n \"Systems of Algebraic Equations with Bad Reduction\"\nUniversitaet Heidelberg, Interdisziplinaeres Zentrum\nfuer wissenschaftliches Rechnen, Preprint 95-46, Dezember 1995.\n\nBirch, B: \"Noncongruence Subgroups, Covers and Drawings\",\nIn \"The Grothendieck Theory of Dessins d'Enfants\",\neditor: Schneps, L., London Mathematical Society Lecture Series 200,\nCambridge University Press, pages 25-46, 1994.\n\nThere are six real and forty complex conjugated solutions.",
+    "dimension": 8
+}

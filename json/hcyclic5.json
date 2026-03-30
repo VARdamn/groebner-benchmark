@@ -1,0 +1,19 @@
+{
+    "variables": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "w"
+    ],
+    "equations": [
+        "x1+x2+x3+x4+x5",
+        "x1*x2+x1*x5+x2*x3+x3*x4+x4*x5",
+        "x1*x2*x3+x1*x2*x5+x1*x4*x5+x2*x3*x4+x3*x4*x5",
+        "x1*x2*x3*x4+x1*x2*x3*x5+x1*x2*x4*x5+x1*x3*x4*x5+x2*x3*x4*x5",
+        "-w^5+x1*x2*x3*x4*x5"
+    ],
+    "description": "TITLE : cyclic n-roots problem\n\nREFERENCES :\n\nSee G\\\"oran Bj\\\"orck and Ralf Fr\\\"oberg:\n`A faster way to count the solutions of inhomogeneous systems\n of algebraic equations, with applications to cyclic n-roots',\nin J. Symbolic Computation (1991) 12, pp 329--336.\n\nBackelin, J. and Froeberg, R.:\n\"How we proved that there are exactly 924 cyclic 7-roots\" ,\nProceedings of ISSAC-91, pp 103-111, ACM, New York, 1991.\n\nG. Bj\\\"orck and R. Fr\\\"oberg, R.:\n\"Methods to ``divide out'' certain solutions from systems of algebraic\n equations, applied to find all cyclic 8-roots \" ,\nIn: Analysis, Algebra and Computers in Math. research,\nM. Gyllenberg and L.E.Persson eds., Lect. Notes in Applied Math. vol. 564,\npp 57-70, Dekker, 1994.\n\nJ. Canny and P. Pedersen. An algorithm for the Newton resultant.\nTechnical Report 1394, Comp. Science Dept., Cornell University, 1993. \n\nI.Z. Emiris and J.F. Canny. Efficient incremental algorithms\nfor the sparse resultant and the mixed volume. J. Symbolic Computation,\n 20(2):117-149, August 1995. \n\nL. Pottier. Bounds for degree of the n-cyclic system.\nINRIA Sophia-Antipolis, Manuscript, 1995.",
+    "dimension": 6
+}

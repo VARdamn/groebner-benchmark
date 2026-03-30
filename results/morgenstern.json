@@ -1,0 +1,14 @@
+{
+  "test": "morgenstern",
+  "time": 0.1619,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 9,
+  "crit1": 114,
+  "crit2": 159,
+  "avr_memory": 26.9902,
+  "max_memory": 52.5391,
+  "num_equations": 5,
+  "num_vars": 9,
+  "mem_per_sec": 324.5155
+}

@@ -1,0 +1,30 @@
+{
+    "variables": [
+        "w",
+        "x3",
+        "x4",
+        "y2",
+        "y3",
+        "y4",
+        "y5",
+        "z2",
+        "z3",
+        "z4",
+        "z5"
+    ],
+    "equations": [
+        "-4*w*y2+9*y2^2+z2",
+        "x3^2+y3^2+z3^2-1",
+        "x4^2+y4^2+z4^2-1",
+        "9*y5^2+9*z5^2-8",
+        "-6*w*x3*y2+3*x3+3*y2*y3+3*z2*z3-1",
+        "3*x3*x4+3*y3*y4+3*z3*z4-1",
+        "x4+3*y4*y5+3*z4*z5-1",
+        "-6*w+3*x3+3*x4+8",
+        "9*y2+9*y3+9*y4+9*y5+8",
+        "z2+z3+z4+z5",
+        "w^2-2"
+    ],
+    "description": "TITLE : a stationary chemical kinetics problem\n\nREFERENCES :\n\nSC 88-07 Herbert Melenk, H. Michael Moeller, Winfried Neun:\n Symbolic Solution of Large Stationary Chemical Kinetics Problems.\n Appeared in: IMPACT Comp. Sci. Eng. 1, p.138-167 (1989) \n\n w = sqrt(2)",
+    "dimension": 11
+}

@@ -1,0 +1,14 @@
+{
+  "test": "hf744",
+  "time": 167.8572,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 13,
+  "crit1": 1906,
+  "crit2": 18038,
+  "avr_memory": 77.4127,
+  "max_memory": 83.3086,
+  "num_equations": 12,
+  "num_vars": 13,
+  "mem_per_sec": 0.4963
+}

@@ -1,0 +1,14 @@
+{
+  "test": "kin1",
+  "time": 44.772,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 12,
+  "crit1": 2022,
+  "crit2": 1807,
+  "avr_memory": 76.4253,
+  "max_memory": 93.8086,
+  "num_equations": 12,
+  "num_vars": 12,
+  "mem_per_sec": 2.0953
+}

@@ -1,0 +1,14 @@
+{
+  "test": "reif",
+  "time": 0.0772,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 16,
+  "crit1": 302,
+  "crit2": 23,
+  "avr_memory": 26.9102,
+  "max_memory": 52.3633,
+  "num_equations": 14,
+  "num_vars": 16,
+  "mem_per_sec": 678.2808
+}

@@ -1,0 +1,14 @@
+{
+  "test": "issac97",
+  "time": 0.1323,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 4,
+  "crit1": 25,
+  "crit2": 15,
+  "avr_memory": 27.5684,
+  "max_memory": 53.6562,
+  "num_equations": 4,
+  "num_vars": 4,
+  "mem_per_sec": 405.565
+}

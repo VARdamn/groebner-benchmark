@@ -1,0 +1,22 @@
+{
+    "variables": [
+        "a",
+        "b",
+        "c",
+        "u",
+        "v",
+        "w",
+        "t",
+        "d"
+    ],
+    "equations": [
+        "u^2+v^2+w^2-1",
+        "2*a^2*u+2*a^2*v+a^2+8*a*b*v+4*a*b+8*a*c*u+8*a*c*w+4*a*c-8*a*d*v-4*a*d-6*b^2*u+2*b^2*v+5*b^2+8*b*c*v+4*b*c+8*b*d*u-8*b*d*w-12*b*d-6*c^2*u+2*c^2*v+8*c^2*w+13*c^2+8*c*d*v+4*c*d+2*d^2*u+2*d^2*v+8*d^2*w+9*d^2",
+        "-150*a^2*u-50*a^2*v+143*a^2+200*a*b*u-300*a*b+200*a*c*u-300*a*c-200*a*d*v+200*a*d*w+100*a*d-150*b^2*u+150*b^2*v+243*b^2+200*b*c*v+200*b*c*w+300*b*c+200*b*d*u-300*b*d-150*c^2*u-50*c^2*v+200*c^2*w+343*c^2-200*c*d*u+300*c*d-150*d^2*u+150*d^2*v+200*d^2*w+443*d^2",
+        "-10*a^2*u-2*a^2*v+7*a^2-8*a*b*v+4*a*b+8*a*c*u-8*a*c*w-20*a*c-8*a*d*v+4*a*d-2*b^2*u-2*b^2*v-5*b^2+8*b*c*v-4*b*c+8*b*d*u+8*b*d*w-4*b*d-2*c^2*u-2*c^2*v+8*c^2*w+3*c^2-8*c*d*v+4*c*d-10*d^2*u-2*d^2*v+8*d^2*w+15*d^2",
+        "-24*a^2*u+36*a^2*v+72*a^2*w-59*a^2-144*a*b*u+48*a*b-144*a*d*w-144*a*d-24*b^2*u-108*b^2*v+72*b^2*w+13*b^2-144*b*c*w-144*b*c-24*c^2*u+36*c^2*v+72*c^2*w-59*c^2+144*c*d*u-48*c*d-24*d^2*u-108*d^2*v+72*d^2*w+13*d^2",
+        "2*(-a^2*u-a^2*v-a^2*w+2*a*b*u+2*a*b*v-4*a*b+2*a*c*u+2*a*c*w-4*a*c-2*a*d*v+2*a*d*w-3*b^2*u+b^2*v-b^2*w+4*b^2+2*b*c*v+2*b*c*w+2*b*d*u-2*b*d*w-4*b*d-3*c^2*u-c^2*v+c^2*w+4*c^2-2*c*d*u+2*c*d*v+4*c*d-d^2*u+d^2*v+d^2*w)"
+    ],
+    "description": "TITLE : parallel robot, the so-called left-hand problem\n\nREFERENCES :\n\nB. Mourrain: \"The 40 generic positions of a parallel robot\".\nIn: M. Bronstein, editor, ISSAC'93, ACM Press, pages 173-182,\nKiev (Ukraine), 1993.\n\nAlso available in the FRISCO test suite, see\nhttp://www.inria.fr/safir/POL/index.html.\n\nPROBLEM DESCRIPTION :\n\nGiven the length of the length of arms (between the ground and the platform)\nof the parallel robot, we want to find all the possible positions of the\nupper platform.\n\nSeveral formulation of the problem are possible, according to\nthe representation of the displacement. Using quaternions (see\n\\cite{MB93issac}), we\nobtain the following system for the matrix $X$ of base points and\nthe matrix $Y$ of points of the platform given\n{\\small\n$$\nX :=\\left [\\begin {array}{cccccc} 0&1/2&3/2&3/2&1/3&2\n\\\\\\noalign{\\medskip}0&-1/2&-1/2&1/2&1/2&0\n\\\\\\noalign{\\medskip}0&-1&-1&-1&-1&0\\end {array}\\right ],\\\nY := \\left [\\begin {array}{cccccc} 0&1&0&1&0&-1\n\\\\\\noalign{\\medskip}0&0&-1&1&1&0\\\\\\noalign{\\medskip}0&1\n&0&1&1&1\\end {array}\\right ]\n$$}\nand the length\n$$\nlg := [ 1,1, 0.8,2,2,2]\nX := 'X':\nY := 'Y':\nS:= 'S';\nN2 := proc(A) normal(A[1]^2 + A[2]^2 + A[3]^2): end:\nX[1]:=[0,0,0];\nX[2]:=[1/2,-1/2,-1];\nX[3]:=[3/2,-1/2,-1];\nX[4]:=[3/2,1/2,-1];\nX[5]:=[1/3,1/2,-1];\nX[6]:=[2,0,0];\nY[1]:=[0,0,0];\nY[2]:=[1,0,1];\nY[3]:=[0,1,1];\nY[4]:=[-1,0,1];\nY[5]:=[0,-1,0];\nY[6]:=[1,1,1];\ndt := (a^2+b^2+c^2+d^2);\nr11 := (a^2-b^2-c^2+d^2)/dt:\nr12 := 2*(a*b-c*d)/dt:\nr13 := 2*(a*c + b*d)/dt:\nr21 := 2*(a*b+c*d)/dt:\nr22 := (-a^2+b^2-c^2+d^2)/dt:\nr23 := 2*(b*c-a*d)/dt:\nr31 := 2*(a*c-b*d)/dt:\nr32 := 2*(a*d+b*c)/dt:\nr33 := (-a^2-b^2+c^2+d^2)/dt:\nR := array([[r11,r12,r13], [r21,r22,r23], [r31,r32,r33]]):\nT := [u,v,w]:\nlg :=[1,1,4/5,2,2,2]:\nS[1] := numer(N2(T)-lg[1]^2);\nfor i from 2 to 6 do\n  S[i] := numer(expand(N2(evalm (R &* Y[i] + T - X[i])) - lg[i]^2 -N2(T) +lg[1]^2)):\nod;\nS : convert(S,list);\nAdded to the list by B. Mourrain (April 1996).",
+    "dimension": 8
+}

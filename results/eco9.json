@@ -1,0 +1,14 @@
+{
+  "test": "eco9",
+  "time": 172.8079,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 9,
+  "crit1": 2312,
+  "crit2": 3735,
+  "avr_memory": 70.4119,
+  "max_memory": 72.418,
+  "num_equations": 9,
+  "num_vars": 9,
+  "mem_per_sec": 0.4191
+}

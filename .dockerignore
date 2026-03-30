@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.git/
+results/
+summary.csv
+summary_first.csv
+test_spec/
+test_spec.zip

@@ -1,0 +1,24 @@
+{
+    "variables": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h"
+    ],
+    "equations": [
+        "-2*d*h-e*g",
+        "4*b+9*e",
+        "-4*c*h-3*d*g-2*e*f",
+        "9*a-7*c-8*f",
+        "-5*c*g-4*d*f-3*e-6*h",
+        "9*b-6*c*f-5*d-7*g",
+        "6*a-5*b+9*d",
+        "-7*a+9*c+8"
+    ],
+    "description": "TITLE : small system from constructive Galois theory, called s9_1\n\nREFERENCES :\n\nRaphael Nauheim:\n \"Systems of Algebraic Equations with Bad Reduction\",\nUniversitaet Heidelberg, Interdisziplinaeres Zentrum\nfuer wissenschaftliches Rechnen, Preprint 95-46, Dezember 1995.\n\n\nThere are four real and six complex conjugated solutions.",
+    "dimension": 8
+}

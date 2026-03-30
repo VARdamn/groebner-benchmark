@@ -1,0 +1,21 @@
+{
+    "variables": [
+        "B",
+        "b",
+        "c",
+        "D",
+        "d",
+        "F",
+        "f"
+    ],
+    "equations": [
+        "b*B-b*D-B*d+d*D-2*F+2",
+        "b*B+b*D-2*b*F-B*d-2*B-d*D+2*d*F+2*D",
+        "b^2-2*b*d-2*b+d^2-2*d+f+1",
+        "b^3*B^2-1",
+        "d^3*D^2-1",
+        "f^3*F^2-1"
+    ],
+    "description": "TITLE : problem of Kotsireas in celestial mechanics\n\nREFERENCES :\n\nKarin Gatermann: \"Polynomial systems with symmetry\", talk presented\nat \"Solving Systems of Equations\", September 14-18, 1998, MSRI.",
+    "dimension": 7
+}

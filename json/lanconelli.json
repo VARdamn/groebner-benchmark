@@ -1,0 +1,23 @@
+{
+    "variables": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "k",
+        "l",
+        "m"
+    ],
+    "equations": [
+        "a+b+c+d+e+f+g+h-1",
+        "-a^2*k-2*a*b*k-a*c*k-a*d*k-a*e*k-a*f*k+a-b^2*k-b*c*k-b*d*k-b*e*k-b*f*k+b-c*e*k-c*f*k-d*e*k-d*f*k",
+        "-a^2*l+a^2-a*b*l+2*a*b-a*c*l-a*d*l-a*e*l+a*e+a*f+b^2-b*e*l+b*e+b*f-c*e*l-d*e*l",
+        "a+c+e+g-m"
+    ],
+    "description": null,
+    "dimension": 11
+}

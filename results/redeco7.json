@@ -1,0 +1,14 @@
+{
+  "test": "redeco7",
+  "time": 0.5639,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 7,
+  "crit1": 203,
+  "crit2": 249,
+  "avr_memory": 27.7637,
+  "max_memory": 53.6641,
+  "num_equations": 7,
+  "num_vars": 7,
+  "mem_per_sec": 95.1659
+}

@@ -1,0 +1,15 @@
+services:
+  groebner-bench:
+    build:
+      context: .
+    image: groebner-bench
+    cpus: "${CPUS:-1.0}"
+    mem_limit: "${RAM:-1g}"
+    memswap_limit: "${SWAP:-1g}"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      CPU: "${CPUS:-1.0}"
+      RAM: "${RAM:-1g}"
+      SWAP: "${SWAP:-1g}"

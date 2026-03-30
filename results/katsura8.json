@@ -1,0 +1,14 @@
+{
+  "test": "katsura8",
+  "time": 457.4518,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 9,
+  "crit1": 2237,
+  "crit2": 7411,
+  "avr_memory": 100.6205,
+  "max_memory": 107.2227,
+  "num_equations": 9,
+  "num_vars": 9,
+  "mem_per_sec": 0.2344
+}

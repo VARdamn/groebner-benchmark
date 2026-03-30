@@ -1,0 +1,16 @@
+{
+    "variables": [
+        "x",
+        "y",
+        "z",
+        "t"
+    ],
+    "equations": [
+        "x*(-x^2*y^2+2*x*y^2*z-144*x*y^2-x*y*z^2-207*x*y*z-3456*x*y+288*y^2*z-5184*y^2+78*y*z^2-9504*y*z-248832*y+z^3-432*z^2+62208*z-2985984)",
+        "-t^2*x^3*z+32*t^2*x^3+t^2*x^2*z^2-72*t^2*x^2*z-87*t^2*x*z^2+2592*t^2*x*z-t^2*z^3+864*t^2*z^2-186624*t^2*z-6*t*x^3*z+4*t*x^2*z^2-432*t*x^2*z-414*t*x*z^2-20736*t*x*z+3456*t*z^2-1492992*t*z-8*x^3*z-1728*x^2*z-124416*x*z-2985984*z",
+        "t^3*x^2*y-2*t^3*x*y^2-24*t^3*x*y+128*t^3*x+t^3*y^3+24*t^3*y^2+8*t^2*x^2*y-12*t^2*x*y^2-160*t^2*x*y+2304*t^2*x+4*t^2*y^3+96*t^2*y^2+20*t*x^2*y-20*t*x*y^2+96*t*x*y+13824*t*x+16*x^2*y+1152*x*y+27648*x",
+        "t^3*y^3-t^3*y^2*z+72*t^3*y^2+71*t^3*y*z+1728*t^3*y-464*t^3*z+13824*t^3+4*t^2*y^3-2*t^2*y^2*z+288*t^2*y^2+360*t^2*y*z+6912*t^2*y+6*t^2*z^2-4320*t^2*z+55296*t^2+432*t*y*z+8*t*z^2-13824*t*z+z^2-13824*z"
+    ],
+    "description": "TITLE : cohn3, modular equations for special algebraic number fields\n\nREFERENCES :\n\nSee the PoSSo test suite.\n\nAndre' Galligo and Carlo Traverso:\n\"Practical Determination of the dimension of an algebraic variety\",\nin E. Kaltofen and S.M. Watt, Eds \"Computers and Mathematics\",\npages 46-52, 1989.\n\nH. Cohn: \"An explicit modular equation in two variables and\nHilbert's Twelfth problem\", Math. of Comp. 38, pp. 227-236, 1982.\n\nH. Cohn, J. Deutch: \"An explit modular equation in two variables\nfor Q[sqrt(3)]\", Math. of Comp. 50, pp. 557-568, 1988.\n\nNOTE :\n\nFrom the 213 solution paths, 110 converged to finite solutions.\nThere are eight highly singular solutons with zero components\nthat are probably not isolated.",
+    "dimension": 4
+}

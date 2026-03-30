@@ -1,0 +1,16 @@
+{
+    "variables": [
+        "x",
+        "y",
+        "z",
+        "w"
+    ],
+    "equations": [
+        "8*w^2+5*x*w+2*z*w+3*w+5*x^2+7*y^2+7*z^2-7*x+2*x*y-7*y-4*w*y-8*z-7*x*z-8*y*z+8",
+        "3*w^2+9*w+4*x^2+9*y^2+7*z^2+7*x-5*w*x+2*x*y+5*y-3*w*y+6*y*z+7*z-6*w*z-2*x*z+5",
+        "-2*w^2+9*x*w+9*y*w+8*x^2+6*y^2-4*w+8*x+9*x*y+4*y+8*z-7*w*z-3*x*z-7*y*z-6*z^2+2",
+        "7*w^2+5*x*w+3*y*w+2*x^2-5*w+4*x+9*x*y+6*y-4*y^2-9*z-5*w*z-7*x*z-5*y*z-4*z^2+2"
+    ],
+    "description": "From http://www.wolfram.comm/new/issac\nISSAC System Challenge 1997\n\nGoal: compute a lexico gbasis",
+    "dimension": 4
+}

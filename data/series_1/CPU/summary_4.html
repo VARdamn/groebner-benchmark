@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Сводка бенчмарков</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --border: #d7deea;
+      --text: #1f2937;
+      --muted: #5b6472;
+      --accent: #1d4ed8;
+      --accent-soft: #dbeafe;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+    .page {
+      max-width: 1800px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 12px 16px 8px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--accent-soft), #ffffff 70%);
+    }
+    h1, h2 {
+      margin: 0;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .meta-table th,
+    .meta-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      font-size: 13px;
+    }
+    .meta-table th {
+      width: 220px;
+      color: var(--muted);
+      font-weight: 600;
+      background: #fafcff;
+    }
+    .results-wrap {
+      padding: 0 0 4px;
+      overflow-x: auto;
+    }
+    .results-table th,
+    .results-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      text-align: left;
+      font-size: 12px;
+    }
+    .results-table thead th {
+      position: sticky;
+      top: 0;
+      background: #edf4ff;
+      color: #153e75;
+      font-weight: 700;
+    }
+    .results-table tbody tr:nth-child(even) {
+      background: #fbfdff;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <div class="card-header">
+        <h1>Сводка бенчмарков</h1>
+        <div class="subtitle">Параметры запуска и общая информация</div>
+      </div>
+      <table class="meta-table">
+        <tbody>
+          <tr><th>Создано</th><td>20.03.2026 17:01:03</td></tr><tr><th>CPU</th><td>4</td></tr><tr><th>RAM</th><td>5g</td></tr><tr><th>SWAP</th><td>7g</td></tr><tr><th>Общее время работы (с)</th><td>9032.9280</td></tr><tr><th>Выбрано тестов</th><td>89</td></tr><tr><th>Выполнено</th><td>89</td></tr><tr><th>Пропущено</th><td>0</td></tr><tr><th>Ошибок</th><td>0</td></tr><tr><th>Интервал замера памяти (с)</th><td>1.0000</td></tr><tr><th>Таймаут теста (с)</th><td>7200.0000</td></tr><tr><th>Категории</th><td>very_quick quick medium long</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="card">
+      <div class="card-header">
+        <h2>Результаты по тестам</h2>
+        <div class="subtitle">Средняя и максимальная память сохраняются отдельно для каждого теста</div>
+      </div>
+      <div class="results-wrap">
+        <table class="results-table">
+          <thead>
+            <tr><th>Имя теста</th><th>Время (с)</th><th>Размерность</th><th>crit1</th><th>crit2</th><th>Средняя память (MB)</th><th>Максимальная память (MB)</th><th>Кол. уравнений</th><th>Кол. переменных</th><th>Память в секунду (MB/s)</th><th>Сумма критериев</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>assur44</td><td>268.5635</td><td>8</td><td>1874</td><td>3363</td><td>157.1184</td><td>221.9648</td><td>8</td><td>8</td><td>0.8265</td><td>5237</td></tr><tr><td>benchmark_D1</td><td>46.4133</td><td>12</td><td>2279</td><td>2001</td><td>78.9631</td><td>101.3359</td><td>12</td><td>12</td><td>2.1833</td><td>4280</td></tr><tr><td>benchmark_i1</td><td>228.2923</td><td>10</td><td>3518</td><td>3564</td><td>180.8709</td><td>225.1992</td><td>10</td><td>10</td><td>0.9865</td><td>7082</td></tr><tr><td>boon</td><td>0.0690</td><td>6</td><td>108</td><td>27</td><td>0.2031</td><td>0.2031</td><td>6</td><td>6</td><td>2.9438</td><td>135</td></tr><tr><td>butcher</td><td>2.5079</td><td>7</td><td>199</td><td>391</td><td>36.3021</td><td>54.6133</td><td>7</td><td>7</td><td>21.7765</td><td>590</td></tr><tr><td>butcher8</td><td>16.1430</td><td>8</td><td>568</td><td>1333</td><td>56.1625</td><td>61.2695</td><td>8</td><td>8</td><td>3.7954</td><td>1901</td></tr><tr><td>camera1s</td><td>1.1256</td><td>6</td><td>177</td><td>94</td><td>27.8984</td><td>55.5312</td><td>6</td><td>6</td><td>49.3348</td><td>271</td></tr><tr><td>caprasse</td><td>0.1088</td><td>4</td><td>65</td><td>188</td><td>0.3320</td><td>0.3320</td><td>4</td><td>4</td><td>3.0518</td><td>253</td></tr><tr><td>cassou</td><td>1.9585</td><td>5</td><td>39</td><td>155</td><td>40.3958</td><td>62.3008</td><td>4</td><td>5</td><td>31.8105</td><td>194</td></tr><tr><td>chandra4</td><td>0.0231</td><td>4</td><td>19</td><td>7</td><td>0.2070</td><td>0.2070</td><td>4</td><td>4</td><td>8.9624</td><td>26</td></tr><tr><td>chandra5</td><td>0.0970</td><td>5</td><td>59</td><td>48</td><td>0.2656</td><td>0.2656</td><td>5</td><td>5</td><td>2.7384</td><td>107</td></tr><tr><td>chandra6</td><td>0.4970</td><td>6</td><td>188</td><td>263</td><td>0.2031</td><td>0.2031</td><td>6</td><td>6</td><td>0.4087</td><td>451</td></tr><tr><td>chemequ</td><td>0.3938</td><td>5</td><td>81</td><td>60</td><td>0.1953</td><td>0.1953</td><td>5</td><td>5</td><td>0.4960</td><td>141</td></tr><tr><td>chemequs</td><td>1.0442</td><td>5</td><td>95</td><td>78</td><td>29.5781</td><td>58.9766</td><td>5</td><td>5</td><td>56.4801</td><td>173</td></tr><tr><td>chemkin</td><td>519.2488</td><td>11</td><td>2210</td><td>3923</td><td>223.3985</td><td>359.9609</td><td>11</td><td>11</td><td>0.6932</td><td>6133</td></tr><tr><td>cohn2</td><td>3.3295</td><td>4</td><td>0</td><td>437</td><td>43.0732</td><td>59.3906</td><td>4</td><td>4</td><td>17.8377</td><td>437</td></tr><tr><td>cohn3</td><td>4765.2788</td><td>4</td><td>81</td><td>7349</td><td>504.9613</td><td>558.4922</td><td>4</td><td>4</td><td>0.1172</td><td>7430</td></tr><tr><td>comb3000</td><td>0.1007</td><td>10</td><td>151</td><td>19</td><td>0.1914</td><td>0.1914</td><td>10</td><td>10</td><td>1.9008</td><td>170</td></tr><tr><td>comb3000s</td><td>0.1229</td><td>10</td><td>151</td><td>20</td><td>0.2031</td><td>0.2031</td><td>10</td><td>10</td><td>1.6528</td><td>171</td></tr><tr><td>conform1</td><td>0.0224</td><td>3</td><td>9</td><td>30</td><td>0.1914</td><td>0.1914</td><td>3</td><td>3</td><td>8.5449</td><td>39</td></tr><tr><td>cpdm5</td><td>40.1006</td><td>5</td><td>348</td><td>2586</td><td>62.2640</td><td>65.5859</td><td>5</td><td>5</td><td>1.6355</td><td>2934</td></tr><tr><td>cyclic5</td><td>0.2274</td><td>5</td><td>98</td><td>353</td><td>0.2500</td><td>0.2500</td><td>5</td><td>5</td><td>1.0994</td><td>451</td></tr><tr><td>cyclic6</td><td>12.5707</td><td>6</td><td>564</td><td>3891</td><td>53.7148</td><td>59.9023</td><td>6</td><td>6</td><td>4.7652</td><td>4455</td></tr><tr><td>d1</td><td>46.6541</td><td>12</td><td>2279</td><td>2000</td><td>78.8431</td><td>100.9453</td><td>12</td><td>12</td><td>2.1637</td><td>4279</td></tr><tr><td>des18_3</td><td>3.3026</td><td>8</td><td>275</td><td>375</td><td>41.4922</td><td>55.9414</td><td>8</td><td>8</td><td>16.9386</td><td>650</td></tr><tr><td>des22_24</td><td>4.1951</td><td>10</td><td>501</td><td>364</td><td>45.3156</td><td>59.2422</td><td>10</td><td>10</td><td>14.1218</td><td>865</td></tr><tr><td>dessin1</td><td>3.2601</td><td>8</td><td>275</td><td>377</td><td>41.4727</td><td>55.9922</td><td>8</td><td>8</td><td>17.1750</td><td>652</td></tr><tr><td>dessin2</td><td>6.0731</td><td>10</td><td>558</td><td>334</td><td>49.4464</td><td>60.7383</td><td>10</td><td>10</td><td>10.0012</td><td>892</td></tr><tr><td>eco7</td><td>1.6127</td><td>7</td><td>272</td><td>238</td><td>26.9453</td><td>53.5977</td><td>7</td><td>7</td><td>33.2347</td><td>510</td></tr><tr><td>eco8</td><td>13.3321</td><td>8</td><td>802</td><td>993</td><td>54.2349</td><td>59.6016</td><td>8</td><td>8</td><td>4.4705</td><td>1795</td></tr><tr><td>eco9</td><td>161.7070</td><td>9</td><td>2348</td><td>3773</td><td>69.0231</td><td>70.9961</td><td>9</td><td>9</td><td>0.4390</td><td>6121</td></tr><tr><td>extcyc4</td><td>0.3082</td><td>5</td><td>137</td><td>460</td><td>0.1992</td><td>0.1992</td><td>5</td><td>5</td><td>0.6464</td><td>597</td></tr><tr><td>extcyc5</td><td>59.3014</td><td>6</td><td>738</td><td>9169</td><td>70.2990</td><td>84.4961</td><td>6</td><td>6</td><td>1.4249</td><td>9907</td></tr><tr><td>f633</td><td>0.9744</td><td>10</td><td>318</td><td>630</td><td>26.3555</td><td>52.5078</td><td>9</td><td>10</td><td>53.8873</td><td>948</td></tr><tr><td>f744</td><td>194.7977</td><td>12</td><td>3358</td><td>3777</td><td>90.1434</td><td>100.9062</td><td>12</td><td>12</td><td>0.5180</td><td>7135</td></tr><tr><td>fabrice24</td><td>127.6233</td><td>9</td><td>1225</td><td>1051</td><td>111.6975</td><td>131.9805</td><td>9</td><td>9</td><td>1.0341</td><td>2276</td></tr><tr><td>filter9</td><td>138.8264</td><td>9</td><td>6132</td><td>17055</td><td>80.0463</td><td>94.9375</td><td>9</td><td>9</td><td>0.6839</td><td>23187</td></tr><tr><td>geneig</td><td>0.5121</td><td>6</td><td>94</td><td>52</td><td>0.3906</td><td>0.3906</td><td>6</td><td>6</td><td>0.7628</td><td>146</td></tr><tr><td>hairer1</td><td>0.0290</td><td>8</td><td>42</td><td>25</td><td>0.2031</td><td>0.2031</td><td>6</td><td>8</td><td>7.0043</td><td>67</td></tr><tr><td>hcyclic5</td><td>0.1514</td><td>6</td><td>89</td><td>544</td><td>0.2031</td><td>0.2031</td><td>5</td><td>6</td><td>1.3416</td><td>633</td></tr><tr><td>hcyclic6</td><td>4.6471</td><td>7</td><td>273</td><td>4134</td><td>44.4422</td><td>56.1094</td><td>6</td><td>7</td><td>12.0741</td><td>4407</td></tr><tr><td>heart</td><td>0.0635</td><td>8</td><td>75</td><td>3</td><td>0.2070</td><td>0.2070</td><td>8</td><td>8</td><td>3.2603</td><td>78</td></tr><tr><td>hemmecke</td><td>0.0412</td><td>4</td><td>11</td><td>14</td><td>0.2500</td><td>0.2500</td><td>3</td><td>4</td><td>6.0680</td><td>25</td></tr><tr><td>hf744</td><td>159.3143</td><td>13</td><td>1906</td><td>18079</td><td>76.9771</td><td>83.1641</td><td>12</td><td>13</td><td>0.5220</td><td>19985</td></tr><tr><td>hietarinta1</td><td>97.7933</td><td>10</td><td>3582</td><td>3093</td><td>90.1851</td><td>101.5664</td><td>62</td><td>10</td><td>1.0386</td><td>6675</td></tr><tr><td>hunecke</td><td>0.0052</td><td>5</td><td>1</td><td>15</td><td>0.2031</td><td>0.2031</td><td>8</td><td>5</td><td>39.0625</td><td>16</td></tr><tr><td>i1</td><td>281.7833</td><td>12</td><td>3517</td><td>3566</td><td>186.9599</td><td>244.7500</td><td>10</td><td>12</td><td>0.8686</td><td>7083</td></tr><tr><td>issac97</td><td>0.1109</td><td>4</td><td>25</td><td>18</td><td>0.2031</td><td>0.2031</td><td>4</td><td>4</td><td>1.8316</td><td>43</td></tr><tr><td>jcf26</td><td>179.2177</td><td>34</td><td>3643</td><td>1050</td><td>133.2303</td><td>162.0742</td><td>34</td><td>34</td><td>0.9043</td><td>4693</td></tr><tr><td>katsura6</td><td>6.1401</td><td>7</td><td>280</td><td>425</td><td>47.9849</td><td>56.3594</td><td>7</td><td>7</td><td>9.1789</td><td>705</td></tr><tr><td>katsura7</td><td>48.7487</td><td>8</td><td>719</td><td>1752</td><td>61.6280</td><td>65.8516</td><td>8</td><td>8</td><td>1.3508</td><td>2471</td></tr><tr><td>katsura8</td><td>432.7377</td><td>9</td><td>2237</td><td>7430</td><td>98.7866</td><td>106.1289</td><td>9</td><td>9</td><td>0.2452</td><td>9667</td></tr><tr><td>kin1</td><td>42.9875</td><td>12</td><td>2022</td><td>1804</td><td>76.3314</td><td>94.3281</td><td>12</td><td>12</td><td>2.1943</td><td>3826</td></tr><tr><td>kinema</td><td>4.8445</td><td>9</td><td>377</td><td>331</td><td>46.6484</td><td>56.4258</td><td>9</td><td>9</td><td>11.6474</td><td>708</td></tr><tr><td>kotsireas</td><td>288.2493</td><td>7</td><td>750</td><td>2977</td><td>205.0479</td><td>263.2070</td><td>6</td><td>7</td><td>0.9131</td><td>3727</td></tr><tr><td>ku10</td><td>0.1020</td><td>10</td><td>795</td><td>190</td><td>0.2031</td><td>0.2031</td><td>10</td><td>10</td><td>1.9914</td><td>985</td></tr><tr><td>lanconelli</td><td>0.0124</td><td>11</td><td>9</td><td>3</td><td>0.1914</td><td>0.1914</td><td>4</td><td>11</td><td>15.4360</td><td>12</td></tr><tr><td>lichtblau</td><td>0.5889</td><td>3</td><td>4</td><td>117</td><td>0.2656</td><td>0.2656</td><td>2</td><td>3</td><td>0.4511</td><td>121</td></tr><tr><td>liu</td><td>0.0326</td><td>6</td><td>19</td><td>26</td><td>0.1875</td><td>0.1875</td><td>4</td><td>6</td><td>5.7515</td><td>45</td></tr><tr><td>lorentz</td><td>0.0202</td><td>4</td><td>27</td><td>17</td><td>0.1992</td><td>0.1992</td><td>4</td><td>4</td><td>9.8623</td><td>44</td></tr><tr><td>matrix</td><td>1.9558</td><td>16</td><td>4951</td><td>6814</td><td>35.7760</td><td>53.7344</td><td>16</td><td>16</td><td>27.4744</td><td>11765</td></tr><tr><td>mickey</td><td>0.0002</td><td>2</td><td>1</td><td>0</td><td>0.2031</td><td>0.2031</td><td>2</td><td>2</td><td>1015.6250</td><td>1</td></tr><tr><td>morgenstern</td><td>0.1548</td><td>9</td><td>114</td><td>159</td><td>0.1914</td><td>0.1914</td><td>5</td><td>9</td><td>1.2365</td><td>273</td></tr><tr><td>noon5</td><td>6.2876</td><td>5</td><td>304</td><td>2047</td><td>47.4442</td><td>55.7734</td><td>5</td><td>5</td><td>8.8704</td><td>2351</td></tr><tr><td>noon6</td><td>170.5402</td><td>6</td><td>1425</td><td>16188</td><td>67.3727</td><td>69.3555</td><td>6</td><td>6</td><td>0.4067</td><td>17613</td></tr><tr><td>puma</td><td>0.0464</td><td>8</td><td>84</td><td>6</td><td>0.1992</td><td>0.1992</td><td>8</td><td>8</td><td>4.2935</td><td>90</td></tr><tr><td>quadfor2</td><td>0.0015</td><td>5</td><td>8</td><td>0</td><td>0.2031</td><td>0.2031</td><td>4</td><td>5</td><td>135.4167</td><td>8</td></tr><tr><td>quadgrid</td><td>0.0239</td><td>6</td><td>22</td><td>3</td><td>0.3945</td><td>0.3945</td><td>5</td><td>6</td><td>16.5076</td><td>25</td></tr><tr><td>rabmo</td><td>1.9520</td><td>9</td><td>318</td><td>75</td><td>36.1172</td><td>54.1953</td><td>9</td><td>9</td><td>27.7640</td><td>393</td></tr><tr><td>rbpl</td><td>221.3794</td><td>8</td><td>1462</td><td>7314</td><td>75.7893</td><td>80.0273</td><td>6</td><td>8</td><td>0.3615</td><td>8776</td></tr><tr><td>rbpl24</td><td>124.1766</td><td>9</td><td>1225</td><td>1059</td><td>110.0323</td><td>129.6367</td><td>9</td><td>9</td><td>1.0440</td><td>2284</td></tr><tr><td>redcyc5</td><td>0.2287</td><td>6</td><td>93</td><td>161</td><td>0.1992</td><td>0.1992</td><td>5</td><td>6</td><td>0.8711</td><td>254</td></tr><tr><td>redcyc6</td><td>9.4680</td><td>7</td><td>419</td><td>1991</td><td>50.4297</td><td>56.5469</td><td>6</td><td>7</td><td>5.9724</td><td>2410</td></tr><tr><td>redeco10</td><td>137.6570</td><td>10</td><td>7418</td><td>24871</td><td>72.1585</td><td>76.7852</td><td>10</td><td>10</td><td>0.5578</td><td>32289</td></tr><tr><td>redeco7</td><td>0.3679</td><td>7</td><td>203</td><td>265</td><td>0.2070</td><td>0.2070</td><td>7</td><td>7</td><td>0.5627</td><td>468</td></tr><tr><td>redeco8</td><td>2.7994</td><td>8</td><td>659</td><td>1276</td><td>40.7979</td><td>54.6211</td><td>8</td><td>8</td><td>19.5117</td><td>1935</td></tr><tr><td>redeco9</td><td>20.1146</td><td>9</td><td>2194</td><td>5760</td><td>55.8687</td><td>60.0273</td><td>9</td><td>9</td><td>2.9843</td><td>7954</td></tr><tr><td>reif</td><td>0.0787</td><td>16</td><td>302</td><td>24</td><td>0.2031</td><td>0.2031</td><td>14</td><td>16</td><td>2.5810</td><td>326</td></tr><tr><td>reimer4</td><td>4.0720</td><td>4</td><td>64</td><td>312</td><td>44.5461</td><td>56.2852</td><td>4</td><td>4</td><td>13.8225</td><td>376</td></tr><tr><td>reimer5</td><td>75.7073</td><td>5</td><td>290</td><td>1956</td><td>74.9707</td><td>82.4336</td><td>5</td><td>5</td><td>1.0888</td><td>2246</td></tr><tr><td>rose</td><td>0.1899</td><td>3</td><td>12</td><td>111</td><td>0.2031</td><td>0.2031</td><td>3</td><td>3</td><td>1.0696</td><td>123</td></tr><tr><td>s9_1</td><td>0.0546</td><td>8</td><td>74</td><td>10</td><td>0.2695</td><td>0.2695</td><td>8</td><td>8</td><td>4.9365</td><td>84</td></tr><tr><td>solotarev</td><td>0.0078</td><td>4</td><td>18</td><td>2</td><td>0.2031</td><td>0.2031</td><td>4</td><td>4</td><td>26.0417</td><td>20</td></tr><tr><td>sparse5</td><td>0.0015</td><td>5</td><td>10</td><td>0</td><td>0.2031</td><td>0.2031</td><td>5</td><td>5</td><td>135.4167</td><td>10</td></tr><tr><td>speer</td><td>8.7966</td><td>6</td><td>104</td><td>1941</td><td>50.4531</td><td>56.9375</td><td>4</td><td>6</td><td>6.4727</td><td>2045</td></tr><tr><td>tangents</td><td>1.4102</td><td>6</td><td>226</td><td>133</td><td>27.3809</td><td>54.5586</td><td>6</td><td>6</td><td>38.6886</td><td>359</td></tr><tr><td>test</td><td>0.0058</td><td>3</td><td>1</td><td>4</td><td>0.2031</td><td>0.2031</td><td>4</td><td>3</td><td>35.0216</td><td>5</td></tr><tr><td>uteshev_bikker</td><td>0.3796</td><td>4</td><td>36</td><td>67</td><td>0.2656</td><td>0.2656</td><td>4</td><td>4</td><td>0.6997</td><td>103</td></tr><tr><td>vermeer</td><td>0.7570</td><td>5</td><td>62</td><td>264</td><td>0.1660</td><td>0.3320</td><td>4</td><td>5</td><td>0.4386</td><td>326</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

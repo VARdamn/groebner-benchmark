@@ -1,0 +1,16 @@
+{
+    "variables": [
+        "h1",
+        "h2",
+        "h3",
+        "h4"
+    ],
+    "equations": [
+        "-51234*h1^2-34156*h1*h2-25617*h1*h3+1497532*h1-1600000",
+        "-170780*h1*h2-128085*h2^2-102468*h2*h3+7743830*h2-8000000",
+        "-128085*h1*h3-102468*h2*h3-85390*h3^2+7829220*h3-8000000",
+        "-717276*h1*h4-597730*h2*h4-512340*h3*h4+55103405*h4-56000000"
+    ],
+    "description": "TITLE : The Chandrasekhar H-Equation for n=4\n\nREFERENCES :\n\nLaureano Gonzalez-Vega: \"Some examples on problem solving by using the\n  symbolic viewpoint when dealing with polynomial systems of equations\".\n  in: \"Computer Algebra in Science and Engineering\", Editors: J. Fleischer,\n  J. Grabmeier, F.W. Hehl and W. Kuechlin.  Pages 102-116\n  World Scientific Publishing, 1995.\n\nS. Chandrasekhar: \"Radiative Transfer\", Dover, NY, 1960.\n\nC.T. Kelley: \"Solution of the Chandrasekhar H-equation by Newton's method\".\n  J. Math. Phys., 21 (1980), pp. 1625-1628.\n\nNOTE : the parameter c equals 0.51234.\n  In general c can be any number in the interval (0,1]",
+    "dimension": 4
+}

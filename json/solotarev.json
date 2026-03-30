@@ -1,0 +1,16 @@
+{
+    "variables": [
+        "a",
+        "b",
+        "x",
+        "y"
+    ],
+    "equations": [
+        "-a+3*x^2-2*x",
+        "-a*x+a-2*b+x^3-x^2-2",
+        "-a+3*y^2-2*y",
+        "-a*y-a+y^3-y^2+2"
+    ],
+    "description": "TITLE : the system of Solotarev from the PoSSo test suite\n\nREFERENCES :\n\nSee the PoSSo test suite.",
+    "dimension": 4
+}

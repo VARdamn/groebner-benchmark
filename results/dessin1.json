@@ -1,0 +1,14 @@
+{
+  "test": "dessin1",
+  "time": 3.3923,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 8,
+  "crit1": 275,
+  "crit2": 375,
+  "avr_memory": 45.1539,
+  "max_memory": 57.7891,
+  "num_equations": 8,
+  "num_vars": 8,
+  "mem_per_sec": 17.0354
+}

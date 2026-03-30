@@ -1,0 +1,14 @@
+{
+  "test": "vermeer",
+  "time": 0.8688,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 5,
+  "crit1": 54,
+  "crit2": 212,
+  "avr_memory": 36.5495,
+  "max_memory": 53.9531,
+  "num_equations": 4,
+  "num_vars": 5,
+  "mem_per_sec": 62.1007
+}

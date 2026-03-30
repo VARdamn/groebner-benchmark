@@ -1,0 +1,14 @@
+{
+  "test": "filter9",
+  "time": 130.4272,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 9,
+  "crit1": 5573,
+  "crit2": 15460,
+  "avr_memory": 84.5744,
+  "max_memory": 98.668,
+  "num_equations": 9,
+  "num_vars": 9,
+  "mem_per_sec": 0.7565
+}

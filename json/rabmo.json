@@ -1,0 +1,26 @@
+{
+    "variables": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "x6",
+        "x7",
+        "x8",
+        "x9"
+    ],
+    "equations": [
+        "x1+x3+x5+2*x7-1",
+        "3*x1*x2+3*x3*x4+6*x5*x6+6*x7*x8+6*x7*x9-2",
+        "5*x1*x2^2+5*x3*x4^2+10*x5*x6^2+10*x7*x8^2+10*x7*x9^2-2",
+        "7*x1*x2^3+7*x3*x4^3+14*x5*x6^3+14*x7*x8^3+14*x7*x9^3-2",
+        "9*x1*x2^4+9*x3*x4^4+18*x5*x6^4+18*x7*x8^4+18*x7*x9^4-2",
+        "9*x5*x6^2+18*x7*x8*x9-1",
+        "25*x5*x6^4+50*x7*x8^2*x9^2-1",
+        "15*x5*x6^3+15*x7*x8^2*x9+15*x7*x8*x9^2-1",
+        "21*x5*x6^4+21*x7*x8^3*x9+21*x7*x8*x9^3-1"
+    ],
+    "description": "TITLE : optimal multi-dimensional quadrature formulas\n\nREFERENCES :\n\nThe system has been given by Rabinowitz (1977), and appears in the\nderivation of optimal multi-dimensional quadrature formulas.\n\nRamon E. Moore:\n`Methods and applications of interval analysis',\nchapter 6, page 64, SIAM Philadelphia, 1979.\n\nSandie T. Jones:\n`Locating safe starting regions for iterative methods:\n a heuristic algorithm', in Interval Mathematics 1980, pages 377-386,\nAcademic Press 1980, Editor Karl L.E. Nickel,\nProceedings of an International Symposium on Interval Mathematics,\nMay 27-31, 1980.",
+    "dimension": 9
+}

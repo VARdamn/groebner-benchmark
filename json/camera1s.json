@@ -1,0 +1,20 @@
+{
+    "variables": [
+        "d1",
+        "d2",
+        "d3",
+        "q1",
+        "q2",
+        "q3"
+    ],
+    "equations": [
+        "-d1*q1-d2*q2-d3*q3+1",
+        "-36*d1*q1+41*d1*q2+20*d1*q3+d1+41*d2*q1+18*d2*q2+37*d2*q3-2*d2+20*d3*q1+37*d3*q2-40*d3*q3+3*d3+q1-2*q2+3*q3+58",
+        "707*(-757*d1*q1-1414*d1*q2+1314*d1*q3-100*d1-1414*d2*q1-557*d2*q2-1414*d2*q3+1314*d3*q1-1414*d3*q2-757*d3*q3+100*d3-100*q1+100*q3+2071)",
+        "433*(50*d1*q1+25*d1*q2-866*d1*q3-25*d1+25*d2*q1-866*d2*q2-25*d2*q3+50*d2-866*d3*q1-25*d3*q2-50*d3*q3-25*d3-25*q1+50*q2-25*q3+866)",
+        "-57013*d1*q1-29*d1*q2+37967*d1*q3-19027*d1-29*d2*q1-56987*d2*q2+18973*d2*q3+38033*d2+37967*d3*q1+18973*d3*q2+57031*d3*q3+7*d3-19027*q1+38033*q2+7*q3+56969",
+        "-68*d1*q1-32*d1*q2+13*d1*q3+51*d1-32*d2*q1-48*d2*q2-7*d2*q3-71*d2+13*d3*q1-7*d3*q2+90*d3*q3-10*d3+51*q1-71*q2-10*q3+26"
+    ],
+    "description": "TITLE : camera displacement between two positions, scaled first frame.\n\nREFERENCES :\n\nIoannis Z. Emiris:\n`Sparse Elimination and Application in Kinematics'\nPhD Thesis, Computer Science, University of California at Berkeley, 1994.\n\nIoannis Z. Emiris:\n`A general Solver Based on Sparse Resultants:\n Numerical Issues and Kinematic Applications',\nINRIA Rapport de Recherche no 3110, January 1997, 29 pages\nAvailable via anonymous ftp to ftp.inria.fr\n\nNOTE :\n\nThis system models the displacement of a camera between two positions\nin a static environment, coordinates of matched points in first instance.\nThe coordinates of the frames have been scaled, i.e., all components have\nbeen divided by 1000.",
+    "dimension": 6
+}

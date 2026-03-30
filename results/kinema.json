@@ -1,0 +1,14 @@
+{
+  "test": "kinema",
+  "time": 5.2516,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 9,
+  "crit1": 395,
+  "crit2": 348,
+  "avr_memory": 48.6635,
+  "max_memory": 57.1562,
+  "num_equations": 9,
+  "num_vars": 9,
+  "mem_per_sec": 10.8836
+}

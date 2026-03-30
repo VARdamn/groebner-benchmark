@@ -1,0 +1,32 @@
+{
+    "variables": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6"
+    ],
+    "equations": [
+        "c1^2+s1^2-1",
+        "c2^2+s2^2-1",
+        "c3^2+s3^2-1",
+        "c4^2+s4^2-1",
+        "c5^2+s5^2-1",
+        "c6^2+s6^2-1",
+        "10000*c2*c6+10000*c3*c6+10000*c4*c6+10000*c5*s2*s6-10000*c5*s3*s6-10000*c5*s4*s6-4077",
+        "2000*c1*c2*s5+2000*c1*c3*s5+2000*c1*c4*s5+2000*c5*s1-3823",
+        "10000*s2*s5+10000*s3*s5+10000*s4*s5-19791",
+        "3750*c1*c2+2500*c1*c3+1250*c1*c4-5077",
+        "7500*c2*s1+5000*c3*s1+2500*c4*s1-4293",
+        "30000*s2+20000*s3+10000*s4-39701"
+    ],
+    "description": "TITLE : kinematics problem\n\nREFERENCES :\n\nP. Van Hentenryck, D. McAllester and D. Kapur:\n`Solving Polynomial Systems Using a Branch and Prune Approach'\nSIAM J. Numerical Analysis, Vol. 34, No. 2, pp 797-827, 1997.\n\nH. Hong and V. Stahl:\n`Safe Starting Regions by Fixed Points and Tightening'\nComputing 53(3-4): 322-335, 1995.",
+    "dimension": 12
+}

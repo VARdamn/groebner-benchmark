@@ -1,0 +1,14 @@
+{
+  "test": "i1",
+  "time": 231.9449,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 12,
+  "crit1": 3512,
+  "crit2": 3507,
+  "avr_memory": 187.9623,
+  "max_memory": 244.2461,
+  "num_equations": 10,
+  "num_vars": 12,
+  "mem_per_sec": 1.053
+}

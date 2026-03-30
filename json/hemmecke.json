@@ -1,0 +1,15 @@
+{
+    "variables": [
+        "w",
+        "x",
+        "y",
+        "z"
+    ],
+    "equations": [
+        "x^2-z^20-z^10",
+        "x*y^3-z^30-z^10",
+        "-w^40*x^4+y^6"
+    ],
+    "description": null,
+    "dimension": 4
+}

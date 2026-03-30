@@ -1,0 +1,14 @@
+{
+    "variables": [
+        "x",
+        "y",
+        "z"
+    ],
+    "equations": [
+        "-20*x^2+7*y^4",
+        "2160*x^2*z^4-4000*x^2+1512*x*z^4-2800*x+315*z^4-490",
+        "40320000*x^6*y^2*z+67200000*x^5*y^3+28800000*x^5*y^2*z+94080000*x^4*y^3-23520000*x^4*y*z^2-10080000*x^4*z^3+40924800*x^3*y^3+21168000*x^3*y^2*z-41395200*x^3*y*z^2-28224000*x^3*z^3+2634240*x^2*y^3+4939200*x^2*y^2*z-26726560*x^2*y*z^2-15288000*x^2*z^3-2300844*x*y^3+347508*x*y^2*z-7727104*x*y*z^2-1978032*x*z^3-432180*y^3-852355*y*z^2-180075*z^3"
+    ],
+    "description": "TITLE : the system Rose, a general economic equilibrium model\n\nREFERENCES :\n\nFrom the POSSO test suite.\n\nThis has been presented as a general economic equilibrium model in\n\n Shoven :\"Applied general equilibrium modelling\",\n IMF Staff Papers, pages 394-419, 1983\n\nand discussed in\n\n  Rose, M., Gebauer, R., Kredel, H. and Kungl, H.:\n  \"Exemplifying the workability of the Buchberger algorithm for\n   computation of general equilibrium by a model published\n   in Shoven (83)\".\n  Department of Economics and Applied Mathematics, University of Heidelberg.",
+    "dimension": 3
+}

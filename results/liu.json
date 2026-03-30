@@ -1,0 +1,14 @@
+{
+  "test": "liu",
+  "time": 0.0492,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 6,
+  "crit1": 22,
+  "crit2": 56,
+  "avr_memory": 26.8477,
+  "max_memory": 52.168,
+  "num_equations": 4,
+  "num_vars": 6,
+  "mem_per_sec": 1060.3246
+}

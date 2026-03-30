@@ -1,0 +1,20 @@
+{
+    "variables": [
+        "x0",
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5"
+    ],
+    "equations": [
+        "x0^2+x1^2+x2^2-1",
+        "x0*x3+x1*x4+x2*x5",
+        "50*x0^2-2*x0*x4+14*x0*x5+x1^2-14*x1*x2+2*x1*x3+49*x2^2-14*x2*x3+x3^2+x4^2+x5^2-1",
+        "29*x0^2-10*x0*x1-4*x0*x2-4*x0*x4+10*x0*x5+5*x1^2-20*x1*x2+4*x1*x3-2*x1*x5+26*x2^2-10*x2*x3+2*x2*x4+x3^2+x4^2+x5^2-1",
+        "9*x0^2-6*x0*x5+9*x2^2+6*x2*x3+x3^2+x4^2+x5^2-1",
+        "9*x0^2+6*x0*x5+9*x2^2-6*x2*x3+x3^2+x4^2+x5^2-1"
+    ],
+    "description": "TITLE : all tangent lines to four given spheres\n\nREFERENCES :\n\nFrom e-mail correspondence with Cassiano Durand.\n(crbd@cs.purdue.edu, http://www.cs.purdue.edu/people/crbd)\n\nDESRIPTION : \n\nThe problem is to compute all lines tangent to four unit spheres with\ncenters (0,-3,0) (0, 3,0) (0, 7,1) and (1,5,2).\nIn the representation of the line, two vectors are used:\nt=(x0,x1,x2) is the tangent vector and m=(x3,x4,x5) is the moment vector,\nm = p x t, where p is a point on the line.\n\nFor every sphere we have the equation ||m - p_0 x t||^2 = r^2.\nwhere m is the moment vector, p_0 the center of the sphere,\nt the tangent vector, and r the radius of the sphere.\n%This equation follows from the identity (p-p_0) x t = m - p_0 x t,\nsince m = p x t.\nIn addition we have m.t=0 and ||t||=1, yielding 6 equation in total.\n\nThere are 8 real and 16 complex solutions to this problem.",
+    "dimension": 6
+}

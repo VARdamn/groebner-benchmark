@@ -1,0 +1,14 @@
+{
+    "variables": [
+        "t1",
+        "t2",
+        "t3"
+    ],
+    "equations": [
+        "-3*t2^2*t3^2-t2^2+8*t2*t3-t3^2-9",
+        "-3*t1^2*t3^2-t1^2+8*t1*t3-t3^2-9",
+        "-3*t1^2*t2^2-t1^2+8*t1*t2-t2^2-9"
+    ],
+    "description": "TITLE : conformal analysis of cyclic molecules, first instance\n\nREFERENCES :\n\nIoannis Z. Emiris:\n`Sparse Elimination and Application in Kinematics'\nPhD Thesis, Computer Science, University of California at Berkeley, 1994.\n\nIoannis Z. Emiris:\n`A general Solver Based on Sparse Resultants:\n Numerical Issues and Kinematic Applications',\nINRIA Rapport de Recherche no 3110, January 1997, 29 pages\nAvailable via anonymous ftp to ftp.inria.fr",
+    "dimension": 3
+}

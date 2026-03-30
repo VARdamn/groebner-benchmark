@@ -1,0 +1,14 @@
+{
+  "test": "solotarev",
+  "time": 0.008,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 4,
+  "crit1": 18,
+  "crit2": 2,
+  "avr_memory": 26.6445,
+  "max_memory": 51.875,
+  "num_equations": 4,
+  "num_vars": 4,
+  "mem_per_sec": 6484.375
+}

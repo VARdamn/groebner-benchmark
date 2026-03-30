@@ -1,0 +1,14 @@
+{
+  "test": "sparse5",
+  "time": 0.0015,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 5,
+  "crit1": 10,
+  "crit2": 0,
+  "avr_memory": 26.9199,
+  "max_memory": 51.7344,
+  "num_equations": 5,
+  "num_vars": 5,
+  "mem_per_sec": 34489.5833
+}

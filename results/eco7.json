@@ -1,0 +1,14 @@
+{
+  "test": "eco7",
+  "time": 1.7656,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 7,
+  "crit1": 272,
+  "crit2": 233,
+  "avr_memory": 41.1357,
+  "max_memory": 54.4531,
+  "num_equations": 7,
+  "num_vars": 7,
+  "mem_per_sec": 30.8411
+}

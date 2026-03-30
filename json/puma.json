@@ -1,0 +1,24 @@
+{
+    "variables": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "x6",
+        "x7",
+        "x8"
+    ],
+    "equations": [
+        "x1^2+x2^2-1",
+        "x3^2+x4^2-1",
+        "x5^2+x6^2-1",
+        "x7^2+x8^2-1",
+        "4731*x1*x3-123800*x1-357800*x2*x3-1637*x2-933800*x4+1000000*x7-357100",
+        "4476*x1*x3+5276*x1+15246*x2*x3-1549*x2-13468*x4-12044",
+        "357800*x1+4731*x2+1000000*x6*x8",
+        "-7623*x1+2238*x2+3461"
+    ],
+    "description": "TITLE : hand position and orientation of PUMA robot\n\nREFERENCES :\n\nA. Morgan and V. Shapiro.\n `Box-Bisection for solving second-degree systems and the problem\n  of clustering', ACM Transactions on Mathematical Software,\n Vol. 13, No. 2, pp. 152-167, 1987.\n\nNOTE :\n\nThe system can be easily reduced to a lower dimensional one,\nby eliminating x1 or x2 by the last equation.\nIt is not a hard problem to solve, but a very good test example\nfor algorithms that verify whether the mixed volume is zero or not.\nEvery fine mixed subdivision will have only one mixed cell.\nMore precisely, there are 6336 different configurations, which all\nyield a mixed cell with mixed volume 16.",
+    "dimension": 8
+}

@@ -1,0 +1,14 @@
+{
+  "test": "f744",
+  "time": 243.2493,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 12,
+  "crit1": 3711,
+  "crit2": 4172,
+  "avr_memory": 103.9101,
+  "max_memory": 118.8867,
+  "num_equations": 12,
+  "num_vars": 12,
+  "mem_per_sec": 0.4887
+}

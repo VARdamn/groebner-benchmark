@@ -1,0 +1,33 @@
+{
+    "variables": [
+        "U7",
+        "U6",
+        "U5",
+        "U4",
+        "U3",
+        "U2",
+        "u7",
+        "u6",
+        "u5",
+        "u4",
+        "u3",
+        "u2",
+        "h"
+    ],
+    "equations": [
+        "-h^2+u7*U7",
+        "-h^2+u6*U6",
+        "-h^2+u5*U5",
+        "-h^2+u4*U4",
+        "-h^2+u3*U3",
+        "-h^2+u2*U2",
+        "11*h^3+18*h^2*u2+18*h^2*u3+18*h^2*u4+18*h^2*u5+8*h*u3*U2+8*h*u4*U2+8*h*u4*U3+8*h*u5*U2+8*h*u5*U3+8*h*u5*U4+16*u2*u4*U3+16*u2*u5*U3+16*u2*u5*U4+16*u3*u5*U4",
+        "11*h^3+18*h^2*U2+18*h^2*U3+18*h^2*U4+18*h^2*U5+8*h*u2*U3+8*h*u2*U4+8*h*u2*U5+8*h*u3*U4+8*h*u3*U5+8*h*u4*U5+16*u3*U2*U4+16*u3*U2*U5+16*u4*U2*U5+16*u4*U3*U5",
+        "-17*h^2+8*u2*U2+8*u2*U3+8*u2*U4+8*u2*U5+8*u2*U6+8*u2*U7+8*u3*U3+8*u3*U4+8*u3*U5+8*u3*U6+8*u3*U7+8*u4*U4+8*u4*U5+8*u4*U6+8*u4*U7+8*u5*U5+8*u5*U6+8*u5*U7+8*u6*U6+8*u6*U7",
+        "-17*h^2+8*u2*U2+8*u3*U2+8*u3*U3+8*u4*U2+8*u4*U3+8*u4*U4+8*u5*U2+8*u5*U3+8*u5*U4+8*u5*U5+8*u6*U2+8*u6*U3+8*u6*U4+8*u6*U5+8*u6*U6+8*u7*U2+8*u7*U3+8*u7*U4+8*u7*U5+8*u7*U6",
+        "h+2*U2+2*U3+2*U4+2*U5+2*U6+2*U7",
+        "h+2*u2+2*u3+2*u4+2*u5+2*u6+2*u7"
+    ],
+    "description": "FGb file format                                                  \nFilter Bank: f744 Homogeneous                                    \nThis system is patented by CCETT (French Telecom) & UUNiv. Rennes \nJC Faugere, F. Moreau de Saint Martin and F. Rouillier",
+    "dimension": 13
+}

@@ -1,0 +1,19 @@
+{
+    "variables": [
+        "b",
+        "w1",
+        "w2",
+        "w3",
+        "w4",
+        "w0"
+    ],
+    "equations": [
+        "w0+w1+w2+w3-1",
+        "25000000000000*b*w0+25000000000000*b*w1+25000000000000*b*w2+25000000000000*b*w3+12500000000000*w1+25000000000000*w2+37500000000000*w3-15849364905389",
+        "25000000000000*b^2*w0+25000000000000*b^2*w1+25000000000000*b^2*w2+25000000000000*b^2*w3+25000000000000*b*w1+50000000000000*b*w2+75000000000000*b*w3+6250000000000*w1+25000000000000*w2+112500000000000*w3-10048094716167",
+        "25000000000000*b^3*w0+25000000000000*b^3*w1+25000000000000*b^3*w2+25000000000000*b^3*w3+37500000000000*b^2*w1+75000000000000*b^2*w2+112500000000000*b^2*w3+18750000000000*b*w1+75000000000000*b*w2+168750000000000*b*w3+3125000000000*w1+25000000000000*w2+84375000000000*w3-3277288919759",
+        "3125000000000*b^4*w0+3125000000000*b^4*w1+3125000000000*b^4*w2+3125000000000*b^4*w3+6250000000000*b^3*w1+12500000000000*b^3*w2+18750000000000*b^3*w3+4687500000000*b^2*w1+18750000000000*b^2*w2+42187500000000*b^2*w3+1562500000000*b*w1+12500000000000*b*w2+42187500000000*b*w3+195312500000*w1+3125000000000*w2+15820312500000*w3+944354151583"
+    ],
+    "description": "TITLE : interpolating quadrature formula for function defined on a grid\n\nREFERENCES :\n\nWim Sweldens:\n`The construction and application of wavelets in numerical analysis',\n PhD thesis, K.U.Leuven, 1994.\n\nNOTES :\n\nThe general formulation of this problem is the following:\n\n        3\n       ---                  i\n       \\         /      j  \\\n p  =  /    w  * | b + --- |   - M   = 0, voor i=0,..,4\n  i    ---   j   \\      2  /      i\n       j=0\n\nwith M  the moments of the quadrature formula\n      i\nNote that this system is ill-conditioned.\nThere are 4 complex and one real solution.",
+    "dimension": 6
+}

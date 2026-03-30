@@ -1,0 +1,18 @@
+{
+    "variables": [
+        "x",
+        "y",
+        "z",
+        "t",
+        "a",
+        "h"
+    ],
+    "equations": [
+        "y*z-y*t-x*h+a*h",
+        "z*t-z*x-y*h+a*h",
+        "t*x-y*t-z*h+a*h",
+        "x*y-z*x-t*h+a*h"
+    ],
+    "description": null,
+    "dimension": 6
+}

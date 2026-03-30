@@ -1,0 +1,14 @@
+{
+  "test": "speer",
+  "time": 9.2626,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 6,
+  "crit1": 104,
+  "crit2": 1929,
+  "avr_memory": 51.6435,
+  "max_memory": 57.6758,
+  "num_equations": 4,
+  "num_vars": 6,
+  "mem_per_sec": 6.2267
+}

@@ -1,0 +1,15 @@
+{
+    "variables": [
+        "x",
+        "y",
+        "z"
+    ],
+    "equations": [
+        "x*(-x^3+y*z^3)",
+        "y^4*(y*z-1)",
+        "y^6",
+        "x^4*y^2"
+    ],
+    "description": "examples Blinkov Yu.A.",
+    "dimension": 3
+}

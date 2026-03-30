@@ -1,0 +1,14 @@
+{
+  "test": "extcyc5",
+  "time": 59.6868,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 6,
+  "crit1": 738,
+  "crit2": 9168,
+  "avr_memory": 69.9281,
+  "max_memory": 83.9258,
+  "num_equations": 6,
+  "num_vars": 6,
+  "mem_per_sec": 1.4061
+}

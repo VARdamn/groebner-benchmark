@@ -1,0 +1,14 @@
+{
+  "test": "quadfor2",
+  "time": 0.0015,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 5,
+  "crit1": 8,
+  "crit2": 0,
+  "avr_memory": 26.5938,
+  "max_memory": 51.7305,
+  "num_equations": 4,
+  "num_vars": 5,
+  "mem_per_sec": 34486.9792
+}

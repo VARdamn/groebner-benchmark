@@ -1,0 +1,20 @@
+{
+    "variables": [
+        "c1",
+        "c2",
+        "g1",
+        "g2",
+        "s1",
+        "s2"
+    ],
+    "equations": [
+        "g1^2+s1^2-1",
+        "g2^2+s2^2-1",
+        "5*c1*g1^3+5*c2*g2^3-6",
+        "5*c1*s1^3+5*c2*s2^3-6",
+        "10*c1*g1^2*s1+10*c2*g2^2*s2-7",
+        "10*c1*g1*s1^2+10*c2*g2*s2^2-7"
+    ],
+    "description": "TITLE : neurofysiology, posted by Sjirk Boon\n\nNOTE :\n\nThere are only 8 finite solutions for general values of\nthe constant terms.\nIt can be proved that it is equivalent to a quadrature formula\nproblem, so that there is only one solution upon symmetry.\n\nREFERENCES :\n\nThe system has been posted to the newsgroup\nsci.math.num-analysis by Sjirk Boon.\n\nP. Van Hentenryck, D. McAllester and D. Kapur:\n`Solving Polynomial Systems Using a Branch and Prune Approach'\nSIAM J. Numerical Analysis, Vol. 34, No. 2, pp 797-827, 1997.\n\nSYMMETRY GROUP :\n\n g2 s2 g1 s1 C2 C1\n g1 s1 g2 s2 C1 C2\n s2 g2 s1 g1 C2 C1\n s1 g1 s2 g2 C1 C2\n\n -s1 s2 -g1 g2 -C1 C2\n s1 -s2 g1 -g2 C1 -C2",
+    "dimension": 6
+}

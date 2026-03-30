@@ -1,0 +1,16 @@
+{
+    "variables": [
+        "x",
+        "y",
+        "z",
+        "t"
+    ],
+    "equations": [
+        "x^3*y^2+4*x^2*y^2*z+288*x^2*y^2-x^2*y*z^2+207*x^2*y*z-3456*x^2*y+1152*x*y^2*z+20736*x*y^2+156*x*y*z^2+19008*x*y*z-497664*x*y+x*z^3+432*x*z^2+62208*x*z+2985984*x+82944*y^2*z",
+        "t^3*y^3+4*t^3*y^2+4*t^2*y^3-t^2*y^2*z-48*t^2*y^2-5*t^2*y*z+108*t*y*z+t*z^2+144*t*z-1728*z",
+        "4*t^2*x*z^2+1152*t^2*x*z+82944*t^2*x+t^2*z^3+288*t^2*z^2+20736*t^2*z-t*x^2*z^2+156*t*x^2*z+207*t*x*z^2+19008*t*x*z-3456*t*z^2-497664*t*z+x^3*z+432*x^2*z+62208*x*z+2985984*z",
+        "t^3*y^3+4*t^3*y^2-t^2*x*y^2+4*t^2*y^3-48*t^2*y^2-5*t*x*y^2+108*t*x*y+x^2*y+144*x*y-1728*x"
+    ],
+    "description": "TITLE : cohn2, modular equations for special algebraic number fields\n\nREFERENCES :\n\nFrom PoSSo test suite.\n\nAndre' Galligo and Carlo Traverso:\n\"Practical Determination of the dimension of an algebraic variety\",\nin E. Kaltofen and S.M. Watt, Eds \"Computers and Mathematics\",\npages 46-52, 1989.\n\nH. Cohn: \"An explicit modular equation in two variables and\nHilbert's Twelfth problem\", Math. of Comp. 38, pp. 227-236, 1982.\n\nH. Cohn, J. Deutch: \"An explit modular equation in two variables\nfor Q[sqrt(3)]\", Math. of Comp. 50, pp. 557-568, 1988.",
+    "dimension": 4
+}

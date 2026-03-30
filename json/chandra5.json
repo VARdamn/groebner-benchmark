@@ -1,0 +1,18 @@
+{
+    "variables": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5"
+    ],
+    "equations": [
+        "-256170*h1^2-170780*h1*h2-128085*h1*h3-102468*h1*h4+9487660*h1-10000000",
+        "-170780*h1*h2-128085*h2^2-102468*h2*h3-85390*h2*h4+9743830*h2-10000000",
+        "-896595*h1*h3-717276*h2*h3-597730*h3^2-512340*h3*h4+68804540*h3-70000000",
+        "-1434552*h1*h4-1195460*h2*h4-1024680*h3*h4-896595*h4^2+138206810*h4-140000000",
+        "-3586380*h1*h5-3074040*h2*h5-2689785*h3*h5-2390920*h4*h5+415696344*h5-420000000"
+    ],
+    "description": "TITLE : The Chandrasekhar H-Equation for n=5\n\nREFERENCES :\n\nLaureano Gonzalez-Vega: \"Some examples on problem solving by using the\n  symbolic viewpoint when dealing with polynomial systems of equations\".\n  in: \"Computer Algebra in Science and Engineering\", Editors: J. Fleischer,\n  J. Grabmeier, F.W. Hehl and W. Kuechlin.  Pages 102-116\n  World Scientific Publishing, 1995.\n\nS. Chandrasekhar: \"Radiative Transfer\", Dover, NY, 1960.\n\nNOTE : the parameter c equals 0.51234.\n  In general c can be any number in the interval (0,1]",
+    "dimension": 5
+}

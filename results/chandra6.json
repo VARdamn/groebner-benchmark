@@ -1,0 +1,14 @@
+{
+  "test": "chandra6",
+  "time": 0.6581,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 6,
+  "crit1": 188,
+  "crit2": 248,
+  "avr_memory": 27.8887,
+  "max_memory": 54.1836,
+  "num_equations": 6,
+  "num_vars": 6,
+  "mem_per_sec": 82.3334
+}

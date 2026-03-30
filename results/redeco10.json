@@ -1,0 +1,14 @@
+{
+  "test": "redeco10",
+  "time": 157.6471,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 10,
+  "crit1": 7418,
+  "crit2": 24823,
+  "avr_memory": 72.6698,
+  "max_memory": 78.0938,
+  "num_equations": 10,
+  "num_vars": 10,
+  "mem_per_sec": 0.4954
+}

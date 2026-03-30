@@ -1,0 +1,12 @@
+{
+    "variables": [
+        "x",
+        "y"
+    ],
+    "equations": [
+        "x^2+4*y^2-4",
+        "-x+2*y^2"
+    ],
+    "description": "TITLE : Mickey-mouse example to illustrate homotopy continuation.\n\nREFERENCES :\n\nThe equations represent the intersection of a circle with a parabola.\n\nJan Verschelde and Ronald Cools:\n\"Polynomial Homotopy Continuation, A Portable Ada Software Package\".\nThe Ada-Belgium Newsletter, 4:59--83, 1996.\nProceedings of the 1996 Ada-Belgium Seminar, 22 November 1996,\nEurocontrol, Brussels, Belgium.",
+    "dimension": 2
+}

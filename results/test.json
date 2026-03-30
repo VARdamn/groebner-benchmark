@@ -1,0 +1,14 @@
+{
+  "test": "test",
+  "time": 0.0068,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 3,
+  "crit1": 1,
+  "crit2": 4,
+  "avr_memory": 26.7793,
+  "max_memory": 51.8242,
+  "num_equations": 4,
+  "num_vars": 3,
+  "mem_per_sec": 7621.2086
+}

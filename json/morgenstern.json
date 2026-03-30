@@ -1,0 +1,22 @@
+{
+    "variables": [
+        "x",
+        "y",
+        "z",
+        "t",
+        "u",
+        "v",
+        "w",
+        "a",
+        "b"
+    ],
+    "equations": [
+        "t*x-y*z",
+        "-u*y+v*x-v+y",
+        "t^2-w^2+z^2",
+        "-a^2+u^2-2*u+v^2+1",
+        "-b^2+t^2-2*t*v+u^2-2*u*z+v^2+z^2"
+    ],
+    "description": null,
+    "dimension": 9
+}

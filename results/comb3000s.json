@@ -1,0 +1,14 @@
+{
+  "test": "comb3000s",
+  "time": 0.1538,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 10,
+  "crit1": 151,
+  "crit2": 14,
+  "avr_memory": 28.5449,
+  "max_memory": 55.3516,
+  "num_equations": 10,
+  "num_vars": 10,
+  "mem_per_sec": 359.8931
+}

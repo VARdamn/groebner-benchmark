@@ -1,0 +1,18 @@
+{
+    "variables": [
+        "y1",
+        "y2",
+        "y3",
+        "y4",
+        "y5"
+    ],
+    "equations": [
+        "y1*y2+y1-3*y5",
+        "8000000000*y1*y2+4000000000*y1+7692*y2^2+4000000000*y2*y3^2+2180720*y2*y3+136296*y2*y4+1799*y2-40000000000*y5",
+        "100000000*y2*y3^2+27259*y2*y3+19300000*y3^2+20531*y3-400000000*y5",
+        "17037*y2*y4+1000000000*y4^2-20000000000*y5",
+        "4000000000*y1*y2+4000000000*y1+3846*y2^2+4000000000*y2*y3^2+2180720*y2*y3+136296*y2*y4+1799*y2+772000000*y3^2+1642480*y3+4000000000*y4^2-4000000000"
+    ],
+    "description": "TITLE : chemical equilibrium of hydrocarbon combustion\n\nREFERENCES :\n\nThis polynomial system describes the equilibrium of the products\nof hydrocarbon combustion.\n\nKeith Meintjes and Alexander P. Morgan:\n \"Chemical equilibrium systems as numerical test problems\",\n ACM Toms, Vol 16, No 2, 143-151, 1990.\n\nNOTES :\n\nAlthough the total degree equals 108, there are only 4 real and\n12 complex solutions and an infinite number of solutions at infinity.\n\nA typographical error has occured in equation (2d), \ninstead of `+ 4Ry5', it should be a `- 4Ry5'.\n\nApplying m-homogenization straight to it renders B = 56.\nSimple linear reduction makes the total degree equal to 48.\nWith m-homogenization, no better upper bound can then be computed.\n\nThe constants are :\n R = 10;\n p = 40;\n  sqrt(p) =  6.3246\n  1/sqrt(p) = 0.1581\n  1/p = 0.0250\n\n R5  = 1.930e-01   (2*R5 = 3.8600e-01)\n R6  = 2.597e-03/sqrt(p) = 4.1062e-04\n R7  = 3.448e-03/sqrt(p) = 5.4518e-04\n R8  = 1.799e-05/p       = 4.4975e-07\n R9  = 2.155e-04/sqrt(p) = 3.4074e-05\n R10 = 3.846e-05/p       = 9.6150e-07 \n                  (2*R10 = 1.9230e-06)",
+    "dimension": 5
+}

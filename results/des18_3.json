@@ -1,0 +1,14 @@
+{
+  "test": "des18_3",
+  "time": 3.3027,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 8,
+  "crit1": 275,
+  "crit2": 377,
+  "avr_memory": 45.1359,
+  "max_memory": 57.8477,
+  "num_equations": 8,
+  "num_vars": 8,
+  "mem_per_sec": 17.5153
+}

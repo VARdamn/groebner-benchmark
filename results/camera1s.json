@@ -1,0 +1,14 @@
+{
+  "test": "camera1s",
+  "time": 1.2361,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 6,
+  "crit1": 177,
+  "crit2": 95,
+  "avr_memory": 38.5547,
+  "max_memory": 58.1758,
+  "num_equations": 6,
+  "num_vars": 6,
+  "mem_per_sec": 47.064
+}

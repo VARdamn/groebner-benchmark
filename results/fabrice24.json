@@ -1,0 +1,14 @@
+{
+  "test": "fabrice24",
+  "time": 105.1993,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 9,
+  "crit1": 1227,
+  "crit2": 1019,
+  "avr_memory": 107.0592,
+  "max_memory": 129.6641,
+  "num_equations": 9,
+  "num_vars": 9,
+  "mem_per_sec": 1.2326
+}

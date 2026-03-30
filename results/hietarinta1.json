@@ -1,0 +1,14 @@
+{
+  "test": "hietarinta1",
+  "time": 168.5459,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 10,
+  "crit1": 6692,
+  "crit2": 6469,
+  "avr_memory": 103.7253,
+  "max_memory": 125.25,
+  "num_equations": 62,
+  "num_vars": 10,
+  "mem_per_sec": 0.7431
+}

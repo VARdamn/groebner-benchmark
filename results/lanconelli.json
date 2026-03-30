@@ -1,0 +1,14 @@
+{
+  "test": "lanconelli",
+  "time": 0.0039,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 11,
+  "crit1": 7,
+  "crit2": 2,
+  "avr_memory": 27.082,
+  "max_memory": 51.8477,
+  "num_equations": 4,
+  "num_vars": 11,
+  "mem_per_sec": 13294.2708
+}

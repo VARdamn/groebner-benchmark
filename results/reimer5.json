@@ -1,0 +1,14 @@
+{
+  "test": "reimer5",
+  "time": 75.4382,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 5,
+  "crit1": 272,
+  "crit2": 1812,
+  "avr_memory": 71.8878,
+  "max_memory": 77.0391,
+  "num_equations": 5,
+  "num_vars": 5,
+  "mem_per_sec": 1.0212
+}

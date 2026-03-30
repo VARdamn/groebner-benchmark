@@ -1,0 +1,24 @@
+{
+    "variables": [
+        "F",
+        "th",
+        "P",
+        "S",
+        "k",
+        "s",
+        "p",
+        "f"
+    ],
+    "equations": [
+        "2*f*k-2*f-4*k*p+k*s^2-2*k*s+k",
+        "-8*F*k*p+2*F*k*s^2+4*k*p*S-k*s^2*S+k*s*S-2*k*th+2*s*S-4*th",
+        "-F^2*k+F*k*S-F*S+2*F-k*P-2*P+S^2-S",
+        "-p*P*s-p*S*th+s*th^2-2",
+        "p^3*P^2-1",
+        "f^3*F^2-1",
+        "-4*p*P+p*S^2+P*s^2-s*S*th+th^2",
+        "k-2"
+    ],
+    "description": null,
+    "dimension": 8
+}

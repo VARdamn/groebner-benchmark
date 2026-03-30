@@ -1,0 +1,14 @@
+{
+  "test": "hairer1",
+  "time": 0.0324,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 8,
+  "crit1": 42,
+  "crit2": 24,
+  "avr_memory": 26.7676,
+  "max_memory": 52.0938,
+  "num_equations": 6,
+  "num_vars": 8,
+  "mem_per_sec": 1607.8318
+}

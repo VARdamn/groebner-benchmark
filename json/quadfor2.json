@@ -1,0 +1,17 @@
+{
+    "variables": [
+        "w1",
+        "w2",
+        "w3",
+        "x1",
+        "x2"
+    ],
+    "equations": [
+        "w1+w2-1",
+        "w1*x1+w2*x2",
+        "3*w1*x1^2+3*w2*x2^2-2",
+        "w1*x1^3+w2*x2^3"
+    ],
+    "description": "TITLE : Gaussian quadrature formula with 2 knots and 2 weights over [-1,+1].\n\nREFERENCE : \n\nJan Verschelde and Karin Gatermann:\n`Symmetric Newton Polytopes for Solving Sparse Polynomial Systems',\nAdv. Appl. Math., 16(1): 95-127, 1995.",
+    "dimension": 5
+}

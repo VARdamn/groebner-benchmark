@@ -1,0 +1,14 @@
+{
+  "test": "rabmo",
+  "time": 2.0303,
+  "timed_out": false,
+  "timeout_seconds": null,
+  "dimension": 9,
+  "crit1": 318,
+  "crit2": 68,
+  "avr_memory": 41.3447,
+  "max_memory": 54.7109,
+  "num_equations": 9,
+  "num_vars": 9,
+  "mem_per_sec": 26.9472
+}

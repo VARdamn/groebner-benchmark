@@ -1,0 +1,20 @@
+{
+    "variables": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6"
+    ],
+    "equations": [
+        "-256170*h1^2-170780*h1*h2-128085*h1*h3-102468*h1*h4-85390*h1*h5+11487660*h1-12000000",
+        "-1195460*h1*h2-896595*h2^2-717276*h2*h3-597730*h2*h4-512340*h2*h5+82206810*h2-84000000",
+        "-1793190*h1*h3-1434552*h2*h3-1195460*h3^2-1024680*h3*h4-896595*h3*h5+165609080*h3-168000000",
+        "-4303656*h1*h4-3586380*h2*h4-3074040*h3*h4-2689785*h4^2-2390920*h4*h5+498620430*h4-504000000",
+        "-3586380*h1*h5-3074040*h2*h5-2689785*h3*h5-2390920*h4*h5-2151828*h5^2+499696344*h5-504000000",
+        "-33814440*h1*h6-29587635*h2*h6-26300120*h3*h6-23670108*h4*h6-21518280*h5*h6+5504549820*h6-5544000000"
+    ],
+    "description": "TITLE : The Chandrasekhar H-Equation for n=6\n\nREFERENCES :\n\nLaureano Gonzalez-Vega: \"Some examples on problem solving by using the\n  symbolic viewpoint when dealing with polynomial systems of equations\".\n  in: \"Computer Algebra in Science and Engineering\", Editors: J. Fleischer,\n  J. Grabmeier, F.W. Hehl and W. Kuechlin.  Pages 102-116\n  World Scientific Publishing, 1995.\n\nS. Chandrasekhar: \"Radiative Transfer\", Dover, NY, 1960.\n\nNOTE : the parameter c equals 0.51234.\n  In general c can be any number in the interval (0,1]",
+    "dimension": 6
+}
