@@ -1,2 +1,0 @@
-common_tasks,y_faster_count,x_faster_count,ties_count,x_total_time_seconds,y_total_time_seconds,x_median_time_seconds,y_median_time_seconds,timeout_points,min_slowdown_ratio_x_to_y,median_slowdown_ratio_x_to_y,max_slowdown_ratio_x_to_y
-89.0,89.0,0.0,0.0,10553.3141,7712.565199999999,2.5997,2.146,0.0,1.175,1.2136022436690588,1.3790001482348102
