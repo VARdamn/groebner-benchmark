@@ -24,8 +24,6 @@
   генерация HTML- и CSV-сводок
 - `src/config.py`  
   категории тестов и колонки итоговой таблицы
-- `scripts/plot_series_analysis.py`  
-  постобработка CSV из серии и построение графиков
 
 ## Подготовка окружения
 
@@ -54,12 +52,6 @@ python main.py
 
 ```bash
 python main.py --mode series
-```
-
-Построение аналитики по готовой серии:
-
-```bash
-./venv/bin/python scripts/plot_series_analysis.py --series-dir data/series_1
 ```
 
 ## Режим `single`
@@ -140,45 +132,6 @@ data/
 ```
 
 Во время контейнерного прогона индивидуальные `results/*.json` также появляются в корне проекта, потому что контейнер монтирует рабочую директорию как volume.
-
-## Анализ серий
-
-Скрипт `scripts/plot_series_analysis.py` читает итоговые CSV-файлы серии и строит графики.
-
-Базовый запуск:
-
-```bash
-./venv/bin/python scripts/plot_series_analysis.py --series-dir data/series_1
-```
-
-Если `--series-dir` не указан, скрипт выбирает последнюю серию из `data/`.
-
-Что делает скрипт:
-
-- читает `summary_*.csv` из `CPU`, `RAM`, `SWAP`
-- сопоставляет одинаковые тесты между конфигурациями
-- учитывает `TIMEOUT`, подставляя значение таймаута как верхнюю оценку времени
-- сохраняет графики и агрегированные CSV в `data/series_X/analysis/`
-
-Примеры:
-
-```bash
-./venv/bin/python scripts/plot_series_analysis.py --series-dir data/series_1 --resources CPU RAM
-./venv/bin/python scripts/plot_series_analysis.py --series-dir data/series_1 --cpu-base 7 --ram-base 4g
-./venv/bin/python scripts/plot_series_analysis.py --output-dir reports/series_1_analysis --series-dir data/series_1
-./venv/bin/python scripts/plot_series_analysis.py --skip-resource-analysis --pairwise-csv-x data/series_1/SWAP/summary_4g.csv --pairwise-csv-y data/series_1/RAM/summary_4g.csv --pairwise-output-stem ram_vs_swap_tradeoff
-```
-
-Скрипт строит:
-
-- сравнение времени по задачам
-- распределение времени
-- долю задач, где конфигурация оказалась лучшей
-- геометрическое среднее времени
-- суммарное время серии
-- scatter plot ускорения относительно базовой конфигурации
-
-Также доступно попарное сравнение двух произвольных CSV-файлов.
 
 ## Docker
 
