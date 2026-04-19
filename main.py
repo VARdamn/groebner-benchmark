@@ -2,7 +2,7 @@ import argparse
 import subprocess
 import sys
 
-import src.config as equations
+import src.config as config
 import src.runner as runner
 
 
@@ -17,7 +17,7 @@ def build_parser():
     parser.add_argument(
         "--category",
         nargs="+",
-        choices=sorted(equations.CATEGORY_MAP.keys()),
+        choices=sorted(config.CATEGORY_MAP.keys()),
         help="Предопределенные группы тестов.",
     )
     parser.add_argument(
@@ -26,9 +26,15 @@ def build_parser():
         help="Запустить все тесты из каталога json.",
     )
     parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Пересчитывать тесты, даже если JSON-результат уже существует.",
+        "--skip-tests",
+        nargs="+",
+        metavar="TEST",
+        help="Исключить конкретные тесты по имени.",
+    )
+    parser.add_argument(
+        "--config",
+        choices=sorted(config.BENCHMARK_CONFIGS.keys()),
+        help="Предопределенная ресурсная конфигурация запуска.",
     )
     parser.add_argument(
         "--memory-interval",
@@ -39,7 +45,19 @@ def build_parser():
     parser.add_argument(
         "--timeout",
         type=float,
+        default=config.DEFAULT_TIMEOUT_SEC,
         help="Таймаут одного теста в секундах. Если превышен, тест прерывается и выполняется следующий.",
+    )
+    parser.add_argument(
+        "--repeat",
+        type=int,
+        default=1,
+        help="Сколько раз подряд повторить один и тот же запуск конфигурации.",
+    )
+    parser.add_argument(
+        "--results-dir",
+        default="data",
+        help="Каталог для записи run-директорий.",
     )
     parser.add_argument("--fail-fast", action="store_true", help="Остановиться на первой ошибке.")
     parser.add_argument("--quiet", action="store_true", help="Уменьшить подробность вывода.")

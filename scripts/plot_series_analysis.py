@@ -1,18 +1,16 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
 import argparse
-import math
 import os
-import re
 import tempfile
 from pathlib import Path
-from typing import Iterable
 
 import numpy as np
 import pandas as pd
 
-MPLCONFIGDIR = Path(os.environ.get("MPLCONFIGDIR", Path(tempfile.gettempdir()) / "groebner_matplotlib"))
+MPLCONFIGDIR = Path(
+    os.environ.get("MPLCONFIGDIR", Path(tempfile.gettempdir()) / "groebner_matplotlib")
+)
 MPLCONFIGDIR.mkdir(parents=True, exist_ok=True)
 os.environ["MPLCONFIGDIR"] = str(MPLCONFIGDIR)
 
@@ -20,957 +18,805 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 
 
-RESOURCE_NAMES = ("CPU", "RAM", "SWAP")
-COLUMN_MAP = {
-    "Имя теста": "test_name",
-    "Время (с)": "time_raw",
-    "Размерность": "dimension",
-    "crit1": "crit1",
-    "crit2": "crit2",
-    "Средняя память (MB)": "avg_memory_mb",
-    "Максимальная память (MB)": "max_memory_mb",
-    "Кол. уравнений": "equation_count",
-    "Кол. переменных": "variable_count",
-    "Память в секунду (MB/s)": "memory_per_sec",
-    "Сумма критериев": "criteria_sum",
+CONFIG_ALIASES = {"cpu7_ram4g_swap0g": "B00"}
+SERIES_CONFIGS = {
+    "CPU": ["C0.1", "C0.25", "C0.5", "C0.75", "C01", "C04", "B00"],
+    "RAM": ["R0.5", "R01", "B00"],
+    "SWAP": ["R0.5", "S02", "S04"],
 }
-TIMEOUT_RE = re.compile(r"TIMEOUT\s*\(([\d.,]+)")
-NUMBER_RE = re.compile(r"[-+]?\d+(?:[.,]\d+)?")
-CONFIG_PREFIX_RE = re.compile(r"^summary_", re.IGNORECASE)
+CATEGORY_ORDER = ["quick", "medium", "long"]
+STATUS_ORDER = ["ok", "timeout", "error"]
+STATUS_COLORS = {
+    "ok": "#5b8c5a",
+    "timeout": "#d49a3a",
+    "error": "#b85757",
+}
+CPU_LIMITS = {
+    "C0.1": 0.1,
+    "C0.25": 0.25,
+    "C0.5": 0.5,
+    "C0.75": 0.75,
+    "C01": 1.0,
+    "C04": 4.0,
+    "B00": 7.0,
+}
+SWAP_GB = {"R0.5": 0.0, "S02": 2.0, "S04": 4.0}
+BOX_COLORS = ["#8fbcd4", "#f1b26b", "#c7a9d9", "#93c47d", "#d97c7c", "#7fb3a7", "#b7a07a"]
+SCATTER_COLORS = {
+    "R0.5": "#d49a3a",
+    "R01": "#5c8bd6",
+    "S02": "#7f8c8d",
+    "S04": "#b85757",
+}
+FEATURE_COLUMNS = [
+    "equation_count",
+    "variable_count",
+    "dimension",
+    "max_total_degree",
+    "mean_total_degree",
+    "max_terms_per_equation",
+    "mean_terms_per_equation",
+    "total_terms",
+]
+BASELINE_METRIC_COLUMNS = [
+    "duration_mean_sec",
+    "duration_median_sec",
+    "rss_peak_mean_mb",
+    "rss_peak_max_mb",
+    "major_page_faults_mean",
+    "minor_page_faults_mean",
+]
 
 
 def configure_matplotlib() -> None:
     plt.style.use("default")
     plt.rcParams.update(
         {
-            "figure.figsize": (12, 6),
+            "figure.facecolor": "#ffffff",
+            "axes.facecolor": "#ffffff",
+            "axes.edgecolor": "#d6d6d6",
             "axes.grid": True,
             "grid.alpha": 0.25,
-            "axes.facecolor": "#fbfdff",
-            "figure.facecolor": "#ffffff",
-            "axes.edgecolor": "#ccd6eb",
+            "grid.linestyle": "--",
             "axes.titleweight": "bold",
-            "axes.labelsize": 11,
-            "axes.titlesize": 14,
-            "legend.frameon": True,
-            "legend.facecolor": "#ffffff",
-            "legend.edgecolor": "#dbe2f0",
             "savefig.bbox": "tight",
+            "legend.frameon": True,
         }
     )
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Построение аналитических графиков по CSV-итогам серии экспериментов."
+        description="Построение графиков из PLOTS.md по данным data/raw_summary.csv и data/aggregated_summary.csv."
     )
-    parser.add_argument(
-        "--series-dir",
-        type=Path,
-        help="Каталог вида data/series_X. По умолчанию выбирается последняя серия из data/.",
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=Path,
-        help="Каталог для результатов анализа. По умолчанию: <series-dir>/analysis.",
-    )
-    parser.add_argument(
-        "--resources",
-        nargs="+",
-        choices=RESOURCE_NAMES,
-        default=list(RESOURCE_NAMES),
-        help="Какие серии анализировать.",
-    )
-    parser.add_argument(
-        "--skip-resource-analysis",
-        action="store_true",
-        help="Не строить стандартный набор графиков по папкам CPU/RAM/SWAP.",
-    )
-    parser.add_argument("--cpu-base", help="Базовая CPU-конфигурация для сортировки и ускорения.")
-    parser.add_argument("--ram-base", help="Базовая RAM-конфигурация для сортировки и ускорения.")
-    parser.add_argument("--swap-base", help="Базовая SWAP-конфигурация для сортировки и ускорения.")
-    parser.add_argument(
-        "--formats",
-        nargs="+",
-        default=["png", "pdf"],
-        help="Форматы выходных файлов графиков.",
-    )
-    parser.add_argument("--dpi", type=int, default=300, help="Разрешение растровых изображений.")
-    parser.add_argument("--pairwise-csv-x", type=Path, help="CSV-файл для оси X в попарном сравнении.")
-    parser.add_argument("--pairwise-csv-y", type=Path, help="CSV-файл для оси Y в попарном сравнении.")
-    parser.add_argument("--pairwise-x-label", help="Подпись оси X для попарного сравнения.")
-    parser.add_argument("--pairwise-y-label", help="Подпись оси Y для попарного сравнения.")
-    parser.add_argument("--pairwise-title", help="Заголовок попарного сравнения.")
-    parser.add_argument(
-        "--pairwise-output-stem",
-        default="pairwise_time_comparison",
-        help="Базовое имя файлов для попарного сравнения.",
-    )
+    parser.add_argument("--raw-csv", type=Path, default=Path("data/raw_summary.csv"))
+    parser.add_argument("--aggregated-csv", type=Path, default=Path("data/aggregated_summary.csv"))
+    parser.add_argument("--output-dir", type=Path, default=Path("data/analysis"))
+    parser.add_argument("--formats", nargs="+", default=["png"])
+    parser.add_argument("--dpi", type=int, default=300)
     return parser.parse_args()
 
 
-def discover_latest_series_dir(root: Path) -> Path:
-    candidates = []
-    for path in root.glob("series_*"):
-        if not path.is_dir():
-            continue
-        match = re.search(r"(\d+)$", path.name)
-        if match:
-            candidates.append((int(match.group(1)), path))
-
-    if not candidates:
-        raise FileNotFoundError(f"Не найдено ни одной серии в каталоге {root}")
-
-    candidates.sort(key=lambda item: item[0])
-    return candidates[-1][1]
+def _normalize_config(value: object) -> str:
+    text = "" if value is None else str(value).strip()
+    return CONFIG_ALIASES.get(text, text)
 
 
-def normalize_test_name(value: object) -> str:
-    text = "" if value is None else str(value)
-    text = text.strip()
-    if not text:
-        return ""
-    text = Path(text).stem
-    text = re.sub(r"\s+", " ", text)
-    return text.casefold()
+def _normalize_category(value: object) -> str:
+    return "" if value is None else str(value).strip().lower()
 
 
-def parse_config_value(path: Path) -> str:
-    stem = path.stem
-    stem = CONFIG_PREFIX_RE.sub("", stem)
-    return stem
-
-
-def config_sort_key(config: str) -> tuple[float, str]:
-    match = NUMBER_RE.search(config)
-    number = float(match.group(0).replace(",", ".")) if match else math.inf
-    return number, config
-
-
-def parse_time_value(value: object) -> tuple[float | None, float | None, bool]:
-    if value is None or (isinstance(value, float) and np.isnan(value)):
-        return None, None, False
-
-    text = str(value).strip()
-    if not text:
-        return None, None, False
-
-    timeout_match = TIMEOUT_RE.search(text)
-    if timeout_match:
-        timeout_seconds = float(timeout_match.group(1).replace(",", "."))
-        return None, timeout_seconds, True
-
-    try:
-        return float(text.replace(",", ".")), None, False
-    except ValueError:
-        return None, None, False
-
-
-def coerce_numeric_columns(frame: pd.DataFrame, columns: Iterable[str]) -> None:
+def _coerce_numeric(frame: pd.DataFrame, columns: list[str]) -> None:
     for column in columns:
         if column in frame.columns:
             frame[column] = pd.to_numeric(frame[column], errors="coerce")
 
 
-def prepare_summary_frame(frame: pd.DataFrame, resource: str, config: str, source_file: Path) -> pd.DataFrame:
-    frame = frame.rename(columns={column: COLUMN_MAP.get(column, column) for column in frame.columns})
-    if "test_name" not in frame.columns or "time_raw" not in frame.columns:
-        raise ValueError(f"В файле {source_file} не найдены обязательные колонки 'Имя теста' и 'Время (с)'")
+def load_frames(raw_csv: Path, aggregated_csv: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+    raw = pd.read_csv(raw_csv)
+    aggregated = pd.read_csv(aggregated_csv)
 
-    frame["resource"] = resource
-    frame["config"] = config
-    frame["source_file"] = str(source_file)
-    frame["test_name"] = frame["test_name"].astype(str).str.strip()
-    frame["test_key"] = frame["test_name"].map(normalize_test_name)
-
-    parsed_time = frame["time_raw"].map(parse_time_value)
-    frame["time_seconds"] = parsed_time.map(lambda item: item[0])
-    frame["timeout_seconds"] = parsed_time.map(lambda item: item[1])
-    frame["timed_out"] = parsed_time.map(lambda item: item[2])
-    frame["effective_time_seconds"] = frame["time_seconds"].where(
-        frame["time_seconds"].notna(), frame["timeout_seconds"]
-    )
-
-    coerce_numeric_columns(
-        frame,
+    raw["config_name"] = raw["config_name"].map(_normalize_config)
+    aggregated["config_name"] = aggregated["config_name"].map(_normalize_config)
+    raw["category"] = raw["category"].map(_normalize_category)
+    aggregated["category"] = aggregated["category"].map(_normalize_category)
+    raw["status"] = raw["status"].astype(str).str.strip().str.lower()
+    raw["test_name"] = raw["test_name"].astype(str).str.strip()
+    aggregated["test_name"] = aggregated["test_name"].astype(str).str.strip()
+    _coerce_numeric(
+        raw,
         [
-            "dimension",
-            "crit1",
-            "crit2",
-            "avg_memory_mb",
-            "max_memory_mb",
-            "equation_count",
-            "variable_count",
-            "memory_per_sec",
-            "criteria_sum",
+            "repeat_index",
+            "duration_sec",
+            "rss_peak_mb",
+            "cpu_time_total_sec",
+            "crit_sum",
         ],
     )
-    return frame
-
-
-def load_resource_data(series_dir: Path, resource: str) -> pd.DataFrame:
-    resource_dir = series_dir / resource
-    if not resource_dir.exists():
-        raise FileNotFoundError(f"Каталог {resource_dir} не найден")
-
-    csv_paths = sorted(resource_dir.glob("summary_*.csv"), key=lambda path: config_sort_key(parse_config_value(path)))
-    if not csv_paths:
-        raise FileNotFoundError(f"В каталоге {resource_dir} нет CSV-файлов summary_*.csv")
-
-    frames = []
-    for csv_path in csv_paths:
-        frame = prepare_summary_frame(
-            frame=pd.read_csv(csv_path),
-            resource=resource,
-            config=parse_config_value(csv_path),
-            source_file=csv_path,
-        )
-        frames.append(frame)
-
-    combined = pd.concat(frames, ignore_index=True)
-    combined = combined.loc[combined["test_key"] != ""].copy()
-
-    duplicates = combined.duplicated(subset=["test_key", "config"], keep="first")
-    if duplicates.any():
-        combined = combined.loc[~duplicates].copy()
-
-    combined["config"] = pd.Categorical(
-        combined["config"],
-        categories=sorted(combined["config"].unique(), key=config_sort_key),
-        ordered=True,
+    _coerce_numeric(
+        aggregated,
+        [
+            "runs_count",
+            "ok_runs",
+            "timeout_runs",
+            "error_runs",
+            "completion_rate",
+            "duration_mean_sec",
+            "duration_median_sec",
+            "rss_peak_mean_mb",
+            "rss_peak_max_mb",
+            "major_page_faults_mean",
+            "minor_page_faults_mean",
+            "crit_sum_mean",
+        ]
+        + FEATURE_COLUMNS,
     )
-    return combined
+    aggregated["full_ok"] = aggregated["runs_count"].gt(0) & aggregated["ok_runs"].eq(aggregated["runs_count"])
+    return raw, aggregated
 
 
-def load_single_summary(csv_path: Path, dataset_label: str | None = None) -> pd.DataFrame:
-    if not csv_path.exists():
-        raise FileNotFoundError(f"Файл {csv_path} не найден")
-
-    frame = prepare_summary_frame(
-        frame=pd.read_csv(csv_path),
-        resource="PAIRWISE",
-        config=dataset_label or csv_path.stem,
-        source_file=csv_path,
-    )
-    frame = frame.loc[frame["test_key"] != ""].copy()
-    frame = frame.loc[~frame.duplicated(subset=["test_key"], keep="first")].copy()
-    return frame
-
-
-def parse_summary_html_metadata(summary_html_path: Path) -> dict[str, str]:
-    if not summary_html_path.exists():
-        return {}
-
-    html_text = summary_html_path.read_text(encoding="utf-8")
-    metadata = {}
-    for key in ("CPU", "RAM", "SWAP"):
-        match = re.search(rf"<th>{key}</th><td>([^<]+)</td>", html_text)
-        if match:
-            metadata[key] = match.group(1).strip()
-    return metadata
-
-
-def build_metadata_label(csv_path: Path, explicit_label: str | None) -> str:
-    if explicit_label:
-        return explicit_label
-
-    metadata = parse_summary_html_metadata(csv_path.with_suffix(".html"))
-    parts = []
-    for key in ("RAM", "SWAP"):
-        value = metadata.get(key)
-        if value:
-            parts.append(f"{key}={value}")
-    if parts:
-        return ", ".join(parts)
-    cpu_value = metadata.get("CPU")
-    if cpu_value:
-        return f"CPU={cpu_value}"
-    return csv_path.stem
-
-
-def infer_output_dir(series_dir: Path | None, pairwise_csv_x: Path | None, pairwise_csv_y: Path | None, explicit: Path | None) -> Path:
-    if explicit is not None:
-        return explicit
-
-    if series_dir is not None:
-        return series_dir / "analysis"
-
-    if pairwise_csv_x is not None and pairwise_csv_y is not None:
-        common_root = Path(os.path.commonpath([pairwise_csv_x.resolve(), pairwise_csv_y.resolve()]))
-        return common_root / "analysis"
-
-    return Path("analysis")
-
-
-def choose_base_config(frame: pd.DataFrame, explicit_value: str | None) -> str:
-    configs = [str(config) for config in frame["config"].cat.categories if config is not None]
-    if not configs:
-        raise ValueError("Не найдено ни одной конфигурации для анализа")
-
-    if explicit_value:
-        if explicit_value not in configs:
-            raise ValueError(f"Базовая конфигурация {explicit_value!r} отсутствует. Доступно: {', '.join(configs)}")
-        return explicit_value
-
-    return configs[0]
-
-
-def build_time_matrix(frame: pd.DataFrame, value_column: str) -> pd.DataFrame:
-    matrix = frame.pivot(index="test_key", columns="config", values=value_column)
-    matrix = matrix.sort_index()
-    return matrix
-
-
-def build_test_label_map(frame: pd.DataFrame) -> dict[str, str]:
-    labels = (
-        frame.sort_values(["test_name", "config"])
-        .drop_duplicates(subset=["test_key"], keep="first")
-        .set_index("test_key")["test_name"]
-    )
-    return labels.to_dict()
-
-
-def sort_tests_by_base_time(matrix: pd.DataFrame, base_config: str) -> list[str]:
-    if base_config not in matrix.columns:
-        raise ValueError(f"Базовая конфигурация {base_config!r} отсутствует в матрице результатов")
-
-    sortable = matrix.loc[matrix[base_config].notna(), [base_config]].sort_values(by=base_config)
-    remaining = [index for index in matrix.index if index not in sortable.index]
-    return list(sortable.index) + remaining
-
-
-def save_figure(fig: plt.Figure, output_dir: Path, stem: str, formats: Iterable[str], dpi: int) -> list[Path]:
+def save_figure(fig: plt.Figure, output_dir: Path, stem: str, formats: list[str], dpi: int) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
-    created_files = []
+    created = []
     for file_format in formats:
-        output_path = output_dir / f"{stem}.{file_format}"
-        save_kwargs = {"dpi": dpi}
-        if file_format.lower() == "pdf":
-            save_kwargs = {}
-        fig.savefig(output_path, **save_kwargs)
-        created_files.append(output_path)
+        path = output_dir / f"{stem}.{file_format}"
+        kwargs = {} if file_format.lower() == "pdf" else {"dpi": dpi}
+        fig.savefig(path, **kwargs)
+        created.append(path)
     plt.close(fig)
-    return created_files
+    return created
 
 
-def annotate_timeout_markers(
-    ax: plt.Axes, frame: pd.DataFrame, ordered_tests: list[str], config_order: list[str], color_map: dict[str, str]
-) -> None:
-    timed_out = frame.loc[frame["timed_out"] & frame["test_key"].isin(ordered_tests)]
-    if timed_out.empty:
-        return
-
-    order_map = {test_key: idx for idx, test_key in enumerate(ordered_tests)}
-    for config in config_order:
-        subset = timed_out.loc[timed_out["config"].astype(str) == config]
-        if subset.empty:
-            continue
-        ax.scatter(
-            subset["test_key"].map(order_map),
-            subset["effective_time_seconds"],
-            marker="x",
-            s=35,
-            linewidths=1.3,
-            color=color_map[config],
-            alpha=0.9,
-        )
+def full_ok_tests(aggregated: pd.DataFrame, configs: list[str]) -> list[str]:
+    subset = aggregated.loc[aggregated["config_name"].isin(configs), ["test_name", "config_name", "full_ok"]].copy()
+    pivot = subset.pivot(index="test_name", columns="config_name", values="full_ok")
+    pivot = pivot.reindex(columns=configs)
+    valid = pivot.notna().all(axis=1) & pivot.fillna(False).all(axis=1)
+    return pivot.index[valid].tolist()
 
 
-def plot_time_comparison(
-    frame: pd.DataFrame,
-    resource: str,
+def matched_slowdown_rows(
+    raw: pd.DataFrame,
+    aggregated: pd.DataFrame,
     base_config: str,
-    output_dir: Path,
-    formats: Iterable[str],
-    dpi: int,
-) -> list[Path]:
-    matrix = build_time_matrix(frame, "effective_time_seconds")
-    ordered_tests = sort_tests_by_base_time(matrix, base_config)
-    matrix = matrix.reindex(ordered_tests)
-    label_map = build_test_label_map(frame)
-    config_order = [str(config) for config in matrix.columns]
-    colors = plt.cm.tab10(np.linspace(0, 1, len(config_order)))
-    color_map = {config: color for config, color in zip(config_order, colors)}
-
-    fig, ax = plt.subplots(figsize=(14, 7))
-    x_values = np.arange(len(matrix.index))
-    for config in config_order:
-        series = matrix[config]
-        valid = series.notna()
-        if not valid.any():
+    compare_configs: list[str],
+) -> pd.DataFrame:
+    frames = []
+    for config in compare_configs:
+        tests = full_ok_tests(aggregated, [base_config, config])
+        if not tests:
             continue
-        ax.plot(
-            x_values[valid.to_numpy()],
-            series[valid].to_numpy(),
-            marker="o",
-            markersize=3.2,
-            linewidth=1.6,
-            label=f"{resource}={config}",
-            color=color_map[config],
-        )
 
-    annotate_timeout_markers(ax, frame, ordered_tests, config_order, color_map)
+        base_rows = raw.loc[
+            (raw["config_name"] == base_config)
+            & (raw["status"] == "ok")
+            & (raw["test_name"].isin(tests)),
+            ["test_name", "repeat_index", "duration_sec"],
+        ].rename(columns={"duration_sec": "duration_base"})
+        cmp_rows = raw.loc[
+            (raw["config_name"] == config)
+            & (raw["status"] == "ok")
+            & (raw["test_name"].isin(tests)),
+            ["test_name", "repeat_index", "duration_sec", "category"],
+        ].rename(columns={"duration_sec": "duration_cmp"})
+        merged = cmp_rows.merge(base_rows, on=["test_name", "repeat_index"], how="inner")
+        merged = merged.loc[(merged["duration_base"] > 0) & (merged["duration_cmp"] > 0)].copy()
+        if merged.empty:
+            continue
+        merged["config"] = config
+        merged["slowdown"] = merged["duration_cmp"] / merged["duration_base"]
+        frames.append(merged)
 
-    ax.set_title(f"{resource}: сравнение времени по всем задачам")
-    ax.set_xlabel(f"Задачи, отсортированные по времени базовой конфигурации {resource}={base_config}")
-    ax.set_ylabel("Время вычисления, с")
-    ax.set_yscale("log")
-    ax.legend(ncol=min(4, len(config_order)))
-    ax.grid(True, which="both", alpha=0.25)
-
-    if len(ordered_tests) <= 35:
-        ax.set_xticks(x_values)
-        ax.set_xticklabels([label_map.get(test_key, test_key) for test_key in ordered_tests], rotation=75, ha="right")
-    else:
-        ax.set_xticks([])
-
-    return save_figure(fig, output_dir, f"{resource.lower()}_time_comparison", formats, dpi)
+    if not frames:
+        return pd.DataFrame(columns=["test_name", "repeat_index", "category", "config", "slowdown"])
+    return pd.concat(frames, ignore_index=True)
 
 
-def plot_time_distribution(
-    frame: pd.DataFrame,
-    resource: str,
-    output_dir: Path,
-    formats: Iterable[str],
-    dpi: int,
-) -> list[Path]:
-    config_order = [str(config) for config in frame["config"].cat.categories]
-    values = []
+def ok_runtime_rows(raw: pd.DataFrame, aggregated: pd.DataFrame, configs: list[str]) -> pd.DataFrame:
+    tests = full_ok_tests(aggregated, configs)
+    return raw.loc[
+        raw["config_name"].isin(configs) & raw["test_name"].isin(tests) & raw["status"].eq("ok")
+    ].copy()
+
+
+def boxplot_data(frame: pd.DataFrame, value_column: str, config_order: list[str]) -> tuple[list[str], list[np.ndarray]]:
     labels = []
+    values = []
     for config in config_order:
-        subset = frame.loc[(frame["config"].astype(str) == config) & frame["time_seconds"].notna(), "time_seconds"]
-        if subset.empty:
+        series = frame.loc[frame["config_name"].eq(config), value_column].dropna()
+        if series.empty:
             continue
         labels.append(config)
-        values.append(subset.to_numpy())
+        values.append(series.to_numpy(dtype=float))
+    return labels, values
 
+
+def plot_boxplot(
+    frame: pd.DataFrame,
+    value_column: str,
+    config_order: list[str],
+    title: str,
+    ylabel: str,
+    stem: str,
+    output_dir: Path,
+    formats: list[str],
+    dpi: int,
+    log_scale: bool = False,
+) -> list[Path]:
+    labels, values = boxplot_data(frame, value_column, config_order)
     if not values:
         return []
 
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(10, 6))
     box = ax.boxplot(values, patch_artist=True, tick_labels=labels, showfliers=False)
-    palette = plt.cm.Set2(np.linspace(0, 1, len(values)))
-    for patch, color in zip(box["boxes"], palette):
+    for patch, color in zip(box["boxes"], BOX_COLORS):
         patch.set_facecolor(color)
-        patch.set_alpha(0.75)
-
-    ax.set_title(f"{resource}: распределение времени по конфигурациям")
+        patch.set_alpha(0.8)
+    ax.set_title(title)
     ax.set_xlabel("Конфигурация")
-    ax.set_ylabel("Время вычисления, с")
-    ax.set_yscale("log")
-    ax.text(
-        0.99,
-        0.99,
-        "TIMEOUT исключены из boxplot",
-        transform=ax.transAxes,
-        ha="right",
-        va="top",
-        fontsize=9,
-        color="#5b6575",
+    ax.set_ylabel(ylabel)
+    if log_scale:
+        ax.set_yscale("log")
+    return save_figure(fig, output_dir, stem, formats, dpi)
+
+
+def completion_share_table(
+    aggregated: pd.DataFrame,
+    configs: list[str],
+    category: str | None = None,
+) -> pd.DataFrame:
+    subset = aggregated.loc[aggregated["config_name"].isin(configs)].copy()
+    if category is not None:
+        subset = subset.loc[subset["category"].eq(category)].copy()
+    grouped = (
+        subset.groupby("config_name", observed=False)[["runs_count", "ok_runs", "timeout_runs", "error_runs"]]
+        .sum()
+        .reindex(configs)
+        .fillna(0.0)
     )
-    return save_figure(fig, output_dir, f"{resource.lower()}_time_distribution", formats, dpi)
+    shares = grouped[["ok_runs", "timeout_runs", "error_runs"]].div(
+        grouped["runs_count"].replace(0, np.nan), axis=0
+    )
+    shares.columns = STATUS_ORDER
+    return shares.fillna(0.0)
 
 
-def compute_wins(matrix: pd.DataFrame, tolerance: float = 1e-12) -> pd.Series:
-    wins = pd.Series(0.0, index=matrix.columns, dtype=float)
-    comparable_rows = matrix.dropna(how="all")
-    for _, row in comparable_rows.iterrows():
-        valid = row.dropna()
-        if valid.empty:
-            continue
-        best_value = valid.min()
-        best_configs = valid.index[np.isclose(valid.to_numpy(dtype=float), best_value, atol=tolerance, rtol=0.0)]
-        share = 1.0 / len(best_configs)
-        for config in best_configs:
-            wins.loc[config] += share
-    return wins
-
-
-def plot_best_share(
-    frame: pd.DataFrame,
-    resource: str,
+def plot_stacked_completion(
+    aggregated: pd.DataFrame,
+    configs: list[str],
+    title: str,
+    stem: str,
     output_dir: Path,
-    formats: Iterable[str],
+    formats: list[str],
     dpi: int,
-) -> tuple[list[Path], pd.Series, int]:
-    matrix = build_time_matrix(frame, "effective_time_seconds")
-    comparable = matrix.dropna(how="all")
-    wins = compute_wins(comparable)
-    compared_tasks = len(comparable)
-    shares = wins / compared_tasks if compared_tasks else wins
+    category: str | None = None,
+) -> list[Path]:
+    shares = completion_share_table(aggregated, configs, category=category)
+    if shares.empty:
+        return []
 
-    fig, ax = plt.subplots(figsize=(10, 5))
-    bars = ax.bar([str(item) for item in shares.index], shares.values, color=plt.cm.Paired(np.linspace(0, 1, len(shares))))
-    ax.set_title(f"{resource}: доля задач с лучшим временем")
-    ax.set_xlabel("Конфигурация")
-    ax.set_ylabel("Доля побед")
-    ax.set_ylim(0, max(1.0, shares.max() * 1.15 if len(shares) else 1.0))
-
-    for bar, share_value, win_value in zip(bars, shares.values, wins.values):
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height() + 0.01,
-            f"{share_value:.1%}\n({win_value:.1f})",
-            ha="center",
-            va="bottom",
-            fontsize=9,
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bottom = np.zeros(len(shares))
+    for status in STATUS_ORDER:
+        values = shares[status].to_numpy(dtype=float)
+        ax.bar(
+            shares.index.astype(str),
+            values,
+            bottom=bottom,
+            color=STATUS_COLORS[status],
+            label=status,
         )
-
-    created = save_figure(fig, output_dir, f"{resource.lower()}_best_share", formats, dpi)
-    return created, wins, compared_tasks
-
-
-def geometric_mean(values: pd.Series) -> float:
-    filtered = values.dropna()
-    filtered = filtered.loc[filtered > 0]
-    if filtered.empty:
-        return float("nan")
-    return float(np.exp(np.log(filtered).mean()))
-
-
-def plot_geometric_mean(
-    frame: pd.DataFrame,
-    resource: str,
-    output_dir: Path,
-    formats: Iterable[str],
-    dpi: int,
-) -> tuple[list[Path], pd.Series, int]:
-    matrix = build_time_matrix(frame, "effective_time_seconds")
-    common_matrix = matrix.dropna(how="any")
-    geomeans = common_matrix.apply(geometric_mean, axis=0)
-
-    if common_matrix.empty:
-        return [], geomeans, 0
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    bars = ax.bar(
-        [str(item) for item in geomeans.index],
-        geomeans.values,
-        color=plt.cm.Accent(np.linspace(0, 1, len(geomeans))),
-    )
-    ax.set_title(f"{resource}: геометрическое среднее времени")
+        bottom += values
+    ax.set_title(title)
     ax.set_xlabel("Конфигурация")
-    ax.set_ylabel("Геометрическое среднее, с")
-    ax.set_yscale("log")
-    ax.text(
-        0.99,
-        0.99,
-        f"Общие задачи без пропусков: {len(common_matrix)}",
-        transform=ax.transAxes,
-        ha="right",
-        va="top",
-        fontsize=9,
-        color="#5b6575",
-    )
-    for bar, value in zip(bars, geomeans.values):
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            value,
-            f"{value:.3g}",
-            ha="center",
-            va="bottom",
-            fontsize=9,
-        )
-
-    created = save_figure(fig, output_dir, f"{resource.lower()}_geometric_mean", formats, dpi)
-    return created, geomeans, len(common_matrix)
+    ax.set_ylabel("Доля запусков")
+    ax.set_ylim(0, 1.0)
+    ax.legend()
+    return save_figure(fig, output_dir, stem, formats, dpi)
 
 
-def plot_total_time(
-    frame: pd.DataFrame,
-    resource: str,
+def plot_cpu_median_slowdown_line(
+    slowdown: pd.DataFrame,
     output_dir: Path,
-    formats: Iterable[str],
-    dpi: int,
-) -> tuple[list[Path], pd.Series]:
-    totals = (
-        frame.groupby("config", observed=False)["effective_time_seconds"].sum(min_count=1).sort_index()
-    )
-    fig, ax = plt.subplots(figsize=(10, 5))
-    bars = ax.bar(
-        [str(item) for item in totals.index],
-        totals.values,
-        color=plt.cm.Dark2(np.linspace(0, 1, len(totals))),
-    )
-    ax.set_title(f"{resource}: суммарное время серии")
-    ax.set_xlabel("Конфигурация")
-    ax.set_ylabel("Суммарное время, с")
-    ax.set_yscale("log")
-    for bar, value in zip(bars, totals.values):
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            value,
-            f"{value:.3g}",
-            ha="center",
-            va="bottom",
-            fontsize=9,
-        )
-
-    created = save_figure(fig, output_dir, f"{resource.lower()}_total_time", formats, dpi)
-    return created, totals
-
-
-def plot_speedup_scatter(
-    frame: pd.DataFrame,
-    resource: str,
-    base_config: str,
-    output_dir: Path,
-    formats: Iterable[str],
+    formats: list[str],
     dpi: int,
 ) -> list[Path]:
-    matrix = build_time_matrix(frame, "effective_time_seconds")
-    if base_config not in matrix.columns:
+    if slowdown.empty:
         return []
 
-    compare_configs = [str(config) for config in matrix.columns if str(config) != base_config]
-    if not compare_configs:
+    medians = slowdown.groupby("config", observed=False)["slowdown"].median()
+    x_labels = ["C0.1", "C0.25", "C0.5", "C0.75", "C01", "C04", "B00"]
+    x_values = [CPU_LIMITS[label] for label in x_labels]
+    y_values = [medians.get(label, np.nan) for label in x_labels[:-1]] + [1.0]
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(x_values, y_values, marker="o", linewidth=2.0, color="#3f6ea8")
+    ax.set_title("CPU: лимит CPU vs медианный коэффициент замедления")
+    ax.set_xlabel("CPU limit")
+    ax.set_ylabel("Медианный коэффициент замедления относительно B00")
+    ax.set_xticks(x_values, [str(value).rstrip("0").rstrip(".") for value in x_values])
+    return save_figure(fig, output_dir, "cpu_median_slowdown_line", formats, dpi)
+
+
+def plot_swap_success_rate_line(
+    aggregated: pd.DataFrame,
+    output_dir: Path,
+    formats: list[str],
+    dpi: int,
+) -> list[Path]:
+    shares = completion_share_table(aggregated, SERIES_CONFIGS["SWAP"])
+    if shares.empty:
         return []
 
-    fig, ax = plt.subplots(figsize=(12, 6))
-    colors = plt.cm.tab10(np.linspace(0, 1, len(compare_configs)))
+    x_labels = SERIES_CONFIGS["SWAP"]
+    x_values = [SWAP_GB[label] for label in x_labels]
+    y_values = [shares.loc[label, "ok"] if label in shares.index else np.nan for label in x_labels]
 
-    for config, color in zip(compare_configs, colors):
-        subset = matrix[[base_config, config]].dropna()
-        subset = subset.loc[(subset[base_config] > 0) & (subset[config] > 0)]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(x_values, y_values, marker="o", linewidth=2.0, color="#8b4b5a")
+    ax.set_title("SWAP: объём swap vs success rate")
+    ax.set_xlabel("Swap, GB")
+    ax.set_ylabel("Доля успешных запусков")
+    ax.set_xticks(x_values, [str(int(value)) if value.is_integer() else str(value) for value in x_values])
+    ax.set_ylim(0, 1.0)
+    return save_figure(fig, output_dir, "swap_success_rate_line", formats, dpi)
+
+
+def plot_ram_failure_scatter(
+    aggregated: pd.DataFrame,
+    output_dir: Path,
+    formats: list[str],
+    dpi: int,
+) -> list[Path]:
+    baseline = aggregated.loc[
+        aggregated["config_name"].eq("B00") & aggregated["rss_peak_max_mb"].notna(),
+        ["test_name", "rss_peak_max_mb"],
+    ].copy()
+    if baseline.empty:
+        return []
+
+    frames = []
+    offsets = {"R0.5": -0.03, "R01": 0.03}
+    for config in ["R0.5", "R01"]:
+        subset = aggregated.loc[
+            aggregated["config_name"].eq(config), ["test_name", "full_ok"]
+        ].rename(columns={"full_ok": "outcome"})
+        merged = baseline.merge(subset, on="test_name", how="inner")
+        if merged.empty:
+            continue
+        merged["config"] = config
+        merged["y"] = merged["outcome"].astype(float) + offsets[config]
+        frames.append(merged)
+
+    if not frames:
+        return []
+
+    scatter = pd.concat(frames, ignore_index=True)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for config in ["R0.5", "R01"]:
+        subset = scatter.loc[scatter["config"].eq(config)]
         if subset.empty:
             continue
-        speedup = subset[base_config] / subset[config]
         ax.scatter(
-            subset[base_config],
-            speedup,
-            label=f"{resource}={config}",
-            s=25,
+            subset["rss_peak_max_mb"],
+            subset["y"],
+            s=36,
             alpha=0.75,
-            color=color,
-            edgecolors="none",
+            color=SCATTER_COLORS[config],
+            label=config,
         )
-
-    ax.axhline(1.0, linestyle="--", linewidth=1.2, color="#6b7280")
-    ax.set_title(f"{resource}: ускорение относительно базовой конфигурации {base_config}")
-    ax.set_xlabel(f"Время в базовой конфигурации {resource}={base_config}, с")
-    ax.set_ylabel("Ускорение = T_base / T_config")
-    ax.set_xscale("log")
-    ax.legend(ncol=min(4, len(compare_configs)))
-    return save_figure(fig, output_dir, f"{resource.lower()}_speedup_scatter", formats, dpi)
+    ax.set_title("RAM: baseline peak RSS vs исход под лимитами RAM")
+    ax.set_xlabel("Peak RSS в B00, MB")
+    ax.set_ylabel("Исход")
+    ax.set_yticks([0, 1], ["fail", "ok"])
+    ax.legend(title="Конфигурация")
+    return save_figure(fig, output_dir, "ram_baseline_rss_vs_outcome_scatter", formats, dpi)
 
 
-def build_pairwise_comparison_table(x_frame: pd.DataFrame, y_frame: pd.DataFrame) -> pd.DataFrame:
-    x_subset = x_frame[
-        ["test_key", "test_name", "time_seconds", "timeout_seconds", "timed_out", "effective_time_seconds"]
-    ].rename(
-        columns={
-            "test_name": "test_name_x",
-            "time_seconds": "time_seconds_x",
-            "timeout_seconds": "timeout_seconds_x",
-            "timed_out": "timed_out_x",
-            "effective_time_seconds": "effective_time_seconds_x",
-        }
-    )
-    y_subset = y_frame[
-        ["test_key", "test_name", "time_seconds", "timeout_seconds", "timed_out", "effective_time_seconds"]
-    ].rename(
-        columns={
-            "test_name": "test_name_y",
-            "time_seconds": "time_seconds_y",
-            "timeout_seconds": "timeout_seconds_y",
-            "timed_out": "timed_out_y",
-            "effective_time_seconds": "effective_time_seconds_y",
-        }
-    )
-    merged = x_subset.merge(y_subset, on="test_key", how="inner")
-    merged["test_name"] = merged["test_name_y"].fillna(merged["test_name_x"])
-    merged = merged.dropna(subset=["effective_time_seconds_x", "effective_time_seconds_y"]).copy()
-    merged = merged.sort_values("test_name")
-    if merged.empty:
-        raise ValueError("После объединения не осталось общих задач с числовым временем или таймаутом")
-    return merged
-
-
-def classify_pairwise_outcome(
-    merged: pd.DataFrame, tolerance: float = 1e-12
-) -> tuple[pd.Series, pd.Series, pd.Series]:
-    x_values = merged["effective_time_seconds_x"].to_numpy(dtype=float)
-    y_values = merged["effective_time_seconds_y"].to_numpy(dtype=float)
-    ties = np.isclose(x_values, y_values, atol=tolerance, rtol=0.0)
-    y_faster = (~ties) & (y_values < x_values)
-    x_faster = (~ties) & (x_values < y_values)
-    return pd.Series(y_faster, index=merged.index), pd.Series(x_faster, index=merged.index), pd.Series(ties, index=merged.index)
-
-
-def plot_pairwise_time_comparison(
-    x_frame: pd.DataFrame,
-    y_frame: pd.DataFrame,
-    x_label: str,
-    y_label: str,
-    title: str,
+def plot_cpu_category_slowdown(
+    slowdown: pd.DataFrame,
     output_dir: Path,
-    output_stem: str,
-    formats: Iterable[str],
+    formats: list[str],
     dpi: int,
-) -> tuple[list[Path], pd.DataFrame, dict[str, float]]:
-    merged = build_pairwise_comparison_table(x_frame, y_frame)
-    y_faster, x_faster, ties = classify_pairwise_outcome(merged)
-
-    x_values = merged["effective_time_seconds_x"].to_numpy(dtype=float)
-    y_values = merged["effective_time_seconds_y"].to_numpy(dtype=float)
-    timeout_mask = merged["timed_out_x"].to_numpy(dtype=bool) | merged["timed_out_y"].to_numpy(dtype=bool)
-    ratio = x_values / y_values
-    merged["slowdown_ratio_x_to_y"] = ratio
-    merged = merged.sort_values("slowdown_ratio_x_to_y").reset_index(drop=True)
-    ratio = merged["slowdown_ratio_x_to_y"].to_numpy(dtype=float)
-    timeout_mask = (merged["timed_out_x"] | merged["timed_out_y"]).to_numpy(dtype=bool)
-
-    fig, ax = plt.subplots(figsize=(12, 7))
-    x_axis = np.arange(1, len(merged) + 1)
-    upper_limit = max(ratio.max() * 1.08, 1.05)
-    lower_limit = 1.0 / upper_limit
-    ax.axhspan(1.0, upper_limit, color="#fde68a", alpha=0.25, zorder=0)
-    ax.axhline(1.0, linestyle="--", linewidth=1.5, color="#4b5563")
-    ax.plot(
-        x_axis,
-        ratio,
-        color="#b45309",
-        linewidth=2.1,
-        marker="o",
-        markersize=3.5,
-    )
-    ax.scatter(
-        x_axis[timeout_mask],
-        ratio[timeout_mask],
-        facecolors="none",
-        edgecolors="#111827",
-        linewidths=1.2,
-        s=70,
-    )
-    ax.set_yscale("log")
-    ax.set_ylim(lower_limit, upper_limit)
-    ax.set_xlabel("Номер тестовой задачи")
-    ax.set_ylabel("Отношение времен T1 / T2")
-    ax.set_title(title)
-    ax.set_xlim(1, len(merged))
-    ax.grid(True, which="both", axis="y", alpha=0.25)
-    ax.text(
-        len(merged) * 0.98,
-        1.0,
-        "Т1 = Т2",
-        ha="right",
-        va="bottom",
-        fontsize=9.5,
-        color="#4b5563",
-    )
-
-    summary = {
-        "common_tasks": float(len(merged)),
-        "y_faster_count": float(y_faster.sum()),
-        "x_faster_count": float(x_faster.sum()),
-        "ties_count": float(ties.sum()),
-        "x_total_time_seconds": float(np.sum(x_values)),
-        "y_total_time_seconds": float(np.sum(y_values)),
-        "x_median_time_seconds": float(np.median(x_values)),
-        "y_median_time_seconds": float(np.median(y_values)),
-        "timeout_points": float(timeout_mask.sum()),
-        "min_slowdown_ratio_x_to_y": float(np.min(ratio)),
-        "median_slowdown_ratio_x_to_y": float(np.median(ratio)),
-        "max_slowdown_ratio_x_to_y": float(np.max(ratio)),
-    }
-
-    legend_handles = [
-        Line2D([], [], linestyle="none", label=f"T1 = {x_label}"),
-        Line2D([], [], linestyle="none", label=f"T2 = {y_label}"),
-        Line2D([], [], linestyle="none", label=f"ΣT1 = {summary['x_total_time_seconds']:.1f} с"),
-        Line2D([], [], linestyle="none", label=f"ΣT2 = {summary['y_total_time_seconds']:.1f} с"),
-    ]
-    ax.legend(
-        handles=legend_handles,
-        loc="upper left",
-        framealpha=0.95,
-        handlelength=0,
-        handletextpad=0.0,
-        borderpad=0.7,
-        labelspacing=0.5,
-    )
-    legend = ax.get_legend()
-    if legend is not None:
-        for handle in legend.legend_handles:
-            handle.set_visible(False)
-
-    created_files = save_figure(fig, output_dir, output_stem, formats, dpi)
-
-    merged_export = merged.copy()
-    merged_export["y_faster"] = y_faster.to_numpy()
-    merged_export["x_faster"] = x_faster.to_numpy()
-    merged_export["tie"] = ties.to_numpy()
-    merged_csv_path = output_dir / f"{output_stem}_merged.csv"
-    summary_csv_path = output_dir / f"{output_stem}_summary.csv"
-    merged_export.to_csv(merged_csv_path, index=False)
-    pd.DataFrame([summary]).to_csv(summary_csv_path, index=False)
-    created_files.extend([merged_csv_path, summary_csv_path])
-    return created_files, merged_export, summary
-
-
-def build_resource_summary(
-    frame: pd.DataFrame,
-    wins: pd.Series,
-    compared_tasks: int,
-    geomeans: pd.Series,
-    geomean_task_count: int,
-    totals: pd.Series,
-) -> pd.DataFrame:
-    grouped = frame.groupby("config", observed=False)
-    summary = pd.DataFrame(
-        {
-            "config": [str(config) for config in frame["config"].cat.categories],
-            "completed_tasks": grouped["time_seconds"].count().reindex(frame["config"].cat.categories, fill_value=0).to_numpy(),
-            "timeout_tasks": grouped["timed_out"].sum().reindex(frame["config"].cat.categories, fill_value=0).to_numpy(),
-            "total_effective_time_seconds": totals.reindex(frame["config"].cat.categories).to_numpy(),
-            "geometric_mean_effective_time_seconds": geomeans.reindex(frame["config"].cat.categories).to_numpy(),
-            "best_share": (wins / compared_tasks).reindex(frame["config"].cat.categories, fill_value=0.0).to_numpy()
-            if compared_tasks
-            else np.zeros(len(frame["config"].cat.categories)),
-            "effective_tasks_for_geomean": geomean_task_count,
-        }
-    )
-    return summary
-
-
-def save_resource_tables(
-    frame: pd.DataFrame,
-    summary: pd.DataFrame,
-    resource: str,
-    output_dir: Path,
 ) -> list[Path]:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    long_path = output_dir / f"{resource.lower()}_merged_results.csv"
-    wide_path = output_dir / f"{resource.lower()}_effective_time_matrix.csv"
-    summary_path = output_dir / f"{resource.lower()}_summary_stats.csv"
+    if slowdown.empty:
+        return []
 
-    export_frame = frame.copy()
-    export_frame["config"] = export_frame["config"].astype(str)
-    export_frame.to_csv(long_path, index=False)
-    build_time_matrix(frame, "effective_time_seconds").to_csv(wide_path)
-    summary.to_csv(summary_path, index=False)
-    return [long_path, wide_path, summary_path]
+    compare_configs = ["C0.1", "C0.25", "C0.5", "C0.75", "C01", "C04"]
+    fig, axes = plt.subplots(1, 3, figsize=(16, 5), sharey=True)
+    plotted = False
+    for ax, category in zip(axes, CATEGORY_ORDER):
+        subset = slowdown.loc[slowdown["category"].eq(category)]
+        labels = []
+        values = []
+        for config in compare_configs:
+            series = subset.loc[subset["config"].eq(config), "slowdown"].dropna()
+            if series.empty:
+                continue
+            labels.append(config)
+            values.append(series.to_numpy(dtype=float))
+        if values:
+            plotted = True
+            box = ax.boxplot(values, patch_artist=True, tick_labels=labels, showfliers=False)
+            for patch, color in zip(box["boxes"], BOX_COLORS):
+                patch.set_facecolor(color)
+                patch.set_alpha(0.8)
+        ax.set_title(category.upper())
+        ax.set_xlabel("CPU-конфигурация")
+        ax.grid(True, axis="y", alpha=0.25)
+    if not plotted:
+        plt.close(fig)
+        return []
+    axes[0].set_ylabel("Коэффициент замедления относительно B00")
+    fig.suptitle("CPU: коэффициент замедления по категориям задач")
+    return save_figure(fig, output_dir, "cpu_category_slowdown_boxplot", formats, dpi)
 
 
-def analyze_resource(
-    series_dir: Path,
-    resource: str,
-    base_config: str | None,
+def plot_category_completion_facets(
+    aggregated: pd.DataFrame,
+    configs: list[str],
+    title: str,
+    stem: str,
     output_dir: Path,
-    formats: Iterable[str],
+    formats: list[str],
     dpi: int,
-) -> tuple[list[Path], pd.DataFrame]:
-    frame = load_resource_data(series_dir, resource)
-    resolved_base = choose_base_config(frame, base_config)
-    resource_output_dir = output_dir / resource.lower()
+) -> list[Path]:
+    fig, axes = plt.subplots(1, 3, figsize=(16, 5), sharey=True)
+    plotted = False
+    for ax, category in zip(axes, CATEGORY_ORDER):
+        shares = completion_share_table(aggregated, configs, category=category)
+        if not shares.empty and shares.to_numpy().sum() > 0:
+            plotted = True
+            bottom = np.zeros(len(shares))
+            for status in STATUS_ORDER:
+                values = shares[status].to_numpy(dtype=float)
+                ax.bar(
+                    shares.index.astype(str),
+                    values,
+                    bottom=bottom,
+                    color=STATUS_COLORS[status],
+                    label=status,
+                )
+                bottom += values
+        ax.set_title(category.upper())
+        ax.set_xlabel("Конфигурация")
+        ax.set_ylim(0, 1.0)
+    if not plotted:
+        plt.close(fig)
+        return []
+    axes[0].set_ylabel("Доля запусков")
+    fig.suptitle(title)
+    handles, labels = axes[0].get_legend_handles_labels()
+    if handles:
+        fig.legend(handles, labels, loc="upper right")
+    return save_figure(fig, output_dir, stem, formats, dpi)
 
-    created_files = []
-    created_files.extend(plot_time_comparison(frame, resource, resolved_base, resource_output_dir, formats, dpi))
-    created_files.extend(plot_time_distribution(frame, resource, resource_output_dir, formats, dpi))
 
-    best_share_files, wins, compared_tasks = plot_best_share(frame, resource, resource_output_dir, formats, dpi)
-    created_files.extend(best_share_files)
+def plot_baseline_runtime_scatter(
+    aggregated: pd.DataFrame,
+    output_dir: Path,
+    formats: list[str],
+    dpi: int,
+) -> list[Path]:
+    baseline = aggregated.loc[
+        aggregated["config_name"].eq("B00")
+        & aggregated["full_ok"]
+        & aggregated["crit_sum_mean"].notna()
+        & aggregated["duration_median_sec"].gt(0),
+        ["crit_sum_mean", "duration_median_sec", "category"],
+    ].copy()
+    if baseline.empty:
+        return []
 
-    geomean_files, geomeans, geomean_task_count = plot_geometric_mean(
-        frame, resource, resource_output_dir, formats, dpi
-    )
-    created_files.extend(geomean_files)
+    palette = {"quick": "#5b8c5a", "medium": "#3f6ea8", "long": "#b85757"}
+    baseline["log_duration"] = np.log10(baseline["duration_median_sec"])
 
-    total_files, totals = plot_total_time(frame, resource, resource_output_dir, formats, dpi)
-    created_files.extend(total_files)
-    created_files.extend(plot_speedup_scatter(frame, resource, resolved_base, resource_output_dir, formats, dpi))
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for category in CATEGORY_ORDER:
+        subset = baseline.loc[baseline["category"].eq(category)]
+        if subset.empty:
+            continue
+        ax.scatter(
+            subset["crit_sum_mean"],
+            subset["log_duration"],
+            s=40,
+            alpha=0.8,
+            color=palette[category],
+            label=category.upper(),
+        )
+    ax.set_title("B00: crit_sum_mean vs log(runtime)")
+    ax.set_xlabel("crit_sum_mean")
+    ax.set_ylabel("log10(duration_sec)")
+    ax.legend(title="Категория")
+    return save_figure(fig, output_dir, "baseline_crit_sum_vs_runtime_scatter", formats, dpi)
 
-    summary = build_resource_summary(frame, wins, compared_tasks, geomeans, geomean_task_count, totals)
-    created_files.extend(save_resource_tables(frame, summary, resource, resource_output_dir))
 
-    print(f"[{resource}] базовая конфигурация: {resolved_base}")
-    print(summary.to_string(index=False))
-    print()
-    return created_files, summary
+def plot_correlation_heatmap(
+    aggregated: pd.DataFrame,
+    output_dir: Path,
+    formats: list[str],
+    dpi: int,
+) -> list[Path]:
+    baseline = aggregated.loc[aggregated["config_name"].eq("B00") & aggregated["full_ok"]].copy()
+    feature_columns = [column for column in FEATURE_COLUMNS if column in baseline.columns]
+    metric_columns = [column for column in BASELINE_METRIC_COLUMNS if column in baseline.columns]
+    if baseline.empty or not feature_columns or not metric_columns:
+        return []
+
+    corr = baseline[feature_columns + metric_columns].corr(numeric_only=True).loc[feature_columns, metric_columns]
+    if corr.empty:
+        return []
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    image = ax.imshow(corr.to_numpy(dtype=float), cmap="coolwarm", vmin=-1, vmax=1, aspect="auto")
+    ax.set_title("B00: корреляции признаков и runtime/memory метрик")
+    ax.set_xticks(range(len(metric_columns)), metric_columns, rotation=45, ha="right")
+    ax.set_yticks(range(len(feature_columns)), feature_columns)
+    for row_index in range(len(feature_columns)):
+        for col_index in range(len(metric_columns)):
+            value = corr.iat[row_index, col_index]
+            label = "" if pd.isna(value) else f"{value:.2f}"
+            ax.text(col_index, row_index, label, ha="center", va="center", fontsize=8)
+    fig.colorbar(image, ax=ax, shrink=0.85, label="Корреляция")
+    return save_figure(fig, output_dir, "baseline_feature_runtime_corr_heatmap", formats, dpi)
+
+
+def plot_feature_vs_failure_scatter(
+    aggregated: pd.DataFrame,
+    output_dir: Path,
+    formats: list[str],
+    dpi: int,
+) -> list[Path]:
+    baseline_rss = aggregated.loc[
+        aggregated["config_name"].eq("B00") & aggregated["rss_peak_max_mb"].notna(),
+        ["test_name", "rss_peak_max_mb"],
+    ].rename(columns={"rss_peak_max_mb": "peak_rss_b00"})
+    if baseline_rss.empty:
+        return []
+
+    frames = []
+    offsets = {"R0.5": -0.09, "R01": -0.03, "S02": 0.03, "S04": 0.09}
+    for config in ["R0.5", "R01", "S02", "S04"]:
+        subset = aggregated.loc[
+            aggregated["config_name"].eq(config), ["test_name", "full_ok"]
+        ].rename(columns={"full_ok": "outcome"})
+        merged = baseline_rss.merge(subset, on="test_name", how="inner")
+        if merged.empty:
+            continue
+        merged["config"] = config
+        merged["y"] = merged["outcome"].astype(float) + offsets[config]
+        frames.append(merged)
+
+    if not frames:
+        return []
+
+    scatter = pd.concat(frames, ignore_index=True)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    for config in ["R0.5", "R01", "S02", "S04"]:
+        subset = scatter.loc[scatter["config"].eq(config)]
+        if subset.empty:
+            continue
+        ax.scatter(
+            subset["peak_rss_b00"],
+            subset["y"],
+            s=34,
+            alpha=0.75,
+            color=SCATTER_COLORS[config],
+            label=config,
+        )
+    ax.set_title("Признак задачи vs вероятность отказа")
+    ax.set_xlabel("peak_rss_B00, MB")
+    ax.set_ylabel("Исход")
+    ax.set_yticks([0, 1], ["fail", "ok"])
+    ax.legend(title="Конфигурация")
+    return save_figure(fig, output_dir, "feature_vs_failure_scatter", formats, dpi)
 
 
 def main() -> int:
     configure_matplotlib()
     args = parse_args()
+    raw, aggregated = load_frames(args.raw_csv, args.aggregated_csv)
+    created_files: list[Path] = []
 
-    base_map = {
-        "CPU": args.cpu_base,
-        "RAM": args.ram_base,
-        "SWAP": args.swap_base,
-    }
+    cpu_runtime = ok_runtime_rows(raw, aggregated, SERIES_CONFIGS["CPU"])
+    ram_runtime = ok_runtime_rows(raw, aggregated, SERIES_CONFIGS["RAM"])
+    swap_runtime = ok_runtime_rows(raw, aggregated, SERIES_CONFIGS["SWAP"])
 
-    created_files = []
-    series_dir = None
-    if not args.skip_resource_analysis:
-        series_dir = args.series_dir or discover_latest_series_dir(Path("data"))
+    cpu_slowdown = matched_slowdown_rows(
+        raw,
+        aggregated,
+        "B00",
+        ["C0.1", "C0.25", "C0.5", "C0.75", "C01", "C04"],
+    )
+    ram_slowdown = matched_slowdown_rows(raw, aggregated, "B00", ["R0.5", "R01"])
+    swap_slowdown = matched_slowdown_rows(raw, aggregated, "R0.5", ["S02", "S04"])
 
-    output_dir = infer_output_dir(series_dir, args.pairwise_csv_x, args.pairwise_csv_y, args.output_dir)
-    print(f"Каталог результатов: {output_dir}")
+    cpu_ratio = raw.loc[
+        raw["config_name"].isin(SERIES_CONFIGS["CPU"])
+        & raw["status"].eq("ok")
+        & raw["duration_sec"].gt(0)
+        & raw["cpu_time_total_sec"].notna(),
+        ["config_name", "cpu_time_total_sec", "duration_sec"],
+    ].copy()
+    cpu_ratio["cpu_over_wall"] = cpu_ratio["cpu_time_total_sec"] / cpu_ratio["duration_sec"]
 
-    if series_dir is not None:
-        print(f"Источник данных: {series_dir}")
-        print()
-        for resource in args.resources:
-            resource_dir = series_dir / resource
-            if not resource_dir.exists():
-                print(f"[{resource}] каталог отсутствует, пропускаю")
-                continue
-            files, _ = analyze_resource(
-                series_dir=series_dir,
-                resource=resource,
-                base_config=base_map[resource],
-                output_dir=output_dir,
-                formats=args.formats,
-                dpi=args.dpi,
-            )
-            created_files.extend(files)
-
-    if args.pairwise_csv_x or args.pairwise_csv_y:
-        if args.pairwise_csv_x is None or args.pairwise_csv_y is None:
-            raise ValueError("Для попарного сравнения нужно передать оба файла: --pairwise-csv-x и --pairwise-csv-y")
-
-        x_label = build_metadata_label(args.pairwise_csv_x, args.pairwise_x_label)
-        y_label = build_metadata_label(args.pairwise_csv_y, args.pairwise_y_label)
-        title = args.pairwise_title or "Сравнение конфигураций памяти по относительному времени вычисления"
-        pairwise_output_dir = output_dir / "pairwise"
-        x_frame = load_single_summary(args.pairwise_csv_x, dataset_label=x_label)
-        y_frame = load_single_summary(args.pairwise_csv_y, dataset_label=y_label)
-        pairwise_files, _, summary = plot_pairwise_time_comparison(
-            x_frame=x_frame,
-            y_frame=y_frame,
-            x_label=x_label,
-            y_label=y_label,
-            title=title,
-            output_dir=pairwise_output_dir,
-            output_stem=args.pairwise_output_stem,
-            formats=args.formats,
-            dpi=args.dpi,
+    created_files.extend(
+        plot_boxplot(
+            cpu_runtime,
+            "duration_sec",
+            SERIES_CONFIGS["CPU"],
+            "CPU: boxplot времени выполнения",
+            "duration_sec",
+            "cpu_duration_boxplot",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+            log_scale=True,
         )
-        created_files.extend(pairwise_files)
+    )
+    created_files.extend(
+        plot_boxplot(
+            cpu_slowdown.rename(columns={"config": "config_name"}),
+            "slowdown",
+            ["C0.1", "C0.25", "C0.5", "C0.75", "C01", "C04"],
+            "CPU: boxplot коэффициента замедления относительно B00",
+            "T(config) / T(B00)",
+            "cpu_slowdown_boxplot",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+        )
+    )
+    created_files.extend(
+        plot_boxplot(
+            cpu_ratio,
+            "cpu_over_wall",
+            SERIES_CONFIGS["CPU"],
+            "CPU: boxplot отношения cpu_time_total / duration_sec",
+            "cpu_time_total / duration_sec",
+            "cpu_cpu_ratio_boxplot",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+        )
+    )
+    created_files.extend(plot_cpu_median_slowdown_line(cpu_slowdown, args.output_dir, args.formats, args.dpi))
+    created_files.extend(
+        plot_stacked_completion(
+            aggregated,
+            SERIES_CONFIGS["CPU"],
+            "CPU: completion rate по конфигурациям",
+            "cpu_completion_rate_stacked",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+        )
+    )
 
-        print("[PAIRWISE] сравнение двух конфигураций")
-        print(f"Ось X: {x_label}")
-        print(f"Ось Y: {y_label}")
-        print(
-            f"Общие задачи: {int(summary['common_tasks'])} | "
-            f"медиана отношения T(X)/T(Y): {summary['median_slowdown_ratio_x_to_y']:.3f} | "
-            f"диапазон: {summary['min_slowdown_ratio_x_to_y']:.3f}..{summary['max_slowdown_ratio_x_to_y']:.3f}"
+    created_files.extend(
+        plot_boxplot(
+            ram_runtime,
+            "duration_sec",
+            SERIES_CONFIGS["RAM"],
+            "RAM: boxplot времени выполнения",
+            "duration_sec",
+            "ram_duration_boxplot",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+            log_scale=True,
         )
-        print(
-            f"Суммарное время X: {summary['x_total_time_seconds']:.1f} с | "
-            f"Y: {summary['y_total_time_seconds']:.1f} с"
+    )
+    created_files.extend(
+        plot_boxplot(
+            ram_slowdown.rename(columns={"config": "config_name"}),
+            "slowdown",
+            ["R0.5", "R01"],
+            "RAM: boxplot коэффициента замедления относительно B00",
+            "T(config) / T(B00)",
+            "ram_slowdown_boxplot",
+            args.output_dir,
+            args.formats,
+            args.dpi,
         )
-        print(
-            f"Медиана X: {summary['x_median_time_seconds']:.3f} с | "
-            f"Y: {summary['y_median_time_seconds']:.3f} с"
+    )
+    created_files.extend(
+        plot_stacked_completion(
+            aggregated,
+            SERIES_CONFIGS["RAM"],
+            "RAM: completion rate по конфигурациям",
+            "ram_completion_rate_stacked",
+            args.output_dir,
+            args.formats,
+            args.dpi,
         )
-        print()
+    )
+    created_files.extend(
+        plot_stacked_completion(
+            aggregated,
+            SERIES_CONFIGS["RAM"],
+            "RAM: completion rate по LONG-задачам",
+            "ram_completion_rate_long_stacked",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+            category="long",
+        )
+    )
+    created_files.extend(plot_ram_failure_scatter(aggregated, args.output_dir, args.formats, args.dpi))
+
+    created_files.extend(
+        plot_boxplot(
+            swap_runtime,
+            "duration_sec",
+            SERIES_CONFIGS["SWAP"],
+            "SWAP: boxplot времени выполнения",
+            "duration_sec",
+            "swap_duration_boxplot",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+            log_scale=True,
+        )
+    )
+    created_files.extend(
+        plot_boxplot(
+            swap_slowdown.rename(columns={"config": "config_name"}),
+            "slowdown",
+            ["S02", "S04"],
+            "SWAP: boxplot коэффициента замедления относительно R0.5",
+            "T(config) / T(R0.5)",
+            "swap_slowdown_boxplot",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+        )
+    )
+    created_files.extend(
+        plot_stacked_completion(
+            aggregated,
+            SERIES_CONFIGS["SWAP"],
+            "SWAP: completion rate по конфигурациям",
+            "swap_completion_rate_stacked",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+        )
+    )
+    created_files.extend(plot_swap_success_rate_line(aggregated, args.output_dir, args.formats, args.dpi))
+
+    created_files.extend(plot_cpu_category_slowdown(cpu_slowdown, args.output_dir, args.formats, args.dpi))
+    created_files.extend(
+        plot_category_completion_facets(
+            aggregated,
+            SERIES_CONFIGS["RAM"],
+            "RAM: completion rate по категориям задач",
+            "ram_category_completion_rate_stacked",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+        )
+    )
+    created_files.extend(
+        plot_category_completion_facets(
+            aggregated,
+            SERIES_CONFIGS["SWAP"],
+            "SWAP: completion rate по категориям задач",
+            "swap_category_completion_rate_stacked",
+            args.output_dir,
+            args.formats,
+            args.dpi,
+        )
+    )
+
+    created_files.extend(plot_baseline_runtime_scatter(aggregated, args.output_dir, args.formats, args.dpi))
+    created_files.extend(plot_correlation_heatmap(aggregated, args.output_dir, args.formats, args.dpi))
+    created_files.extend(plot_feature_vs_failure_scatter(aggregated, args.output_dir, args.formats, args.dpi))
 
     if not created_files:
-        raise FileNotFoundError("Не удалось построить ни одного графика: проверьте входные данные и выбранные серии.")
+        raise FileNotFoundError("Не удалось построить ни одного графика.")
 
     print("Созданные файлы:")
     for path in created_files:

@@ -16,8 +16,8 @@ env/
 
 # Local reports and benchmark artifacts
 results/
-data/series_*/
-data/*.zip
+data/*
+!data/problem_features.csv
 summary_*.html
 summary_*.csv
 
